@@ -16,10 +16,10 @@
 const mysql = require("mysql");
 
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "11223344",
-  database: "bluerose"
+  host: "YOUR_HOST",
+  user: "YOUR_DB_USER",
+  password: "YOUR_PASSWORD",
+  database: "YOUR_DB"
 });
 
 exports.connection = connection;
