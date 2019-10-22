@@ -1,1 +1,4 @@
+yarn.lock
+package-lock.json
 node_modules
+components/constants.js
