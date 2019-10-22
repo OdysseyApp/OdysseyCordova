@@ -11,11 +11,6 @@
 
 `npm install node-gyp -g`
 
-`cd server`
-`yarn install`
-`yarn start`
-
-
 ### Create db.js file in server/
 
 ```
@@ -31,3 +26,8 @@ const connection = mysql.createConnection({
 exports.connection = connection;
 ```
 
+## Running The Server
+
+- `cd server`
+- `yarn install`
+- `yarn start`
