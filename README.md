@@ -11,6 +11,10 @@
 
 `npm install node-gyp -g`
 
+`cd server`
+`yarn install`
+`yarn start`
+
 
 ### Create db.js file in server/
 
