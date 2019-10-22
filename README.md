@@ -1,4 +1,4 @@
-## SERVER SETTINGS START
+## Server Settings
 
 ### Install nodemon
 
@@ -26,4 +26,4 @@ const connection = mysql.createConnection({
 
 exports.connection = connection;
 ```
-## SERVER SETTINGS END
+
