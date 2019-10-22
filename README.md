@@ -12,7 +12,8 @@
 
 ### Create db.js file in server/
 
-`const mysql = require("mysql");
+```
+const mysql = require("mysql");
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -22,4 +23,4 @@ const connection = mysql.createConnection({
 });
 
 exports.connection = connection;
-`
+```
