@@ -228,6 +228,7 @@ showFlags = () => {
   loadARchitectWorld();
   //app.loadARchitectWorld();
 }
+//Use the following path with PhoneGap. Remove it with the Cordova build.
 //cordova.file.dataDirectory + 'www/pgday/index.html'
 loadARchitectWorld = () => {
   //console.log(cordova.file.dataDirectory);
@@ -236,7 +237,32 @@ loadARchitectWorld = () => {
     }, function errorFn(error) {
       console.log('Loading AR web view failed: ' + error);
     },
-      'www/pgday/index.html', ['2d_tracking'], { camera_position: 'back' }
+    cordova.file.dataDirectory +  'www/pgday/index.html', ['2d_tracking'], { camera_position: 'back' }
+    );
+  }, function (errorMessage) {
+    console.log(errorMessage);
+  },
+    ['2d_tracking']
+  );
+}
+/*************************************************************/
+/*************************************************************/
+/**************************Coins Collection*******************/
+/*************************************************************/
+/*************************************************************/
+
+collectCoins = () => { 
+  app.wikitudePlugin = cordova.require("com.wikitude.phonegap.WikitudePlugin.WikitudePlugin");
+  loadCoins();
+}
+
+loadCoins = () => {
+  app.wikitudePlugin.isDeviceSupported(function () {
+    app.wikitudePlugin.loadARchitectWorld(function successFn(loadedURL) {
+    }, function errorFn(error) {
+      console.log('Loading AR web view for Coins failed: ' + error);
+    },
+    cordova.file.dataDirectory +  'www/coinCollection/index.html', ['2d_tracking'], { camera_position: 'back' }
     );
   }, function (errorMessage) {
     console.log(errorMessage);

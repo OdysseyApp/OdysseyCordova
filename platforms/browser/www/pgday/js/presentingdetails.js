@@ -7,7 +7,7 @@
  */
 var ServerInformation = {
 
-    POIDATA_SERVER: "http://10.128.238.138:8081/flags/",
+    POIDATA_SERVER: "https://example.wikitude.com/GetSamplePois/",
     POIDATA_SERVER_ARG_LAT: "lat",
     POIDATA_SERVER_ARG_LON: "lon",
     POIDATA_SERVER_ARG_NR_POIS: "nrPois"
