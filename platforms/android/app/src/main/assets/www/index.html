@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <!--
+  <!--
         Customize this policy to fit your own app's needs. For more guidance, see:
             https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
         Some notes:
@@ -11,140 +11,141 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-    <!-- <meta http-equiv="Content-Security-Policy"
+  <!-- <meta http-equiv="Content-Security-Policy"
         content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *"> -->
 
-    <!-- Required meta tags-->
-    <meta charset="utf-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="msapplication-tap-highlight" content="no">
+  <!-- Required meta tags-->
+  <meta charset="utf-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
 
-    <!-- Your app title -->
-    <title>Odyssey</title>
+  <!-- Your app title -->
+  <title>Odyssey</title>
 
-    <link rel="stylesheet" href="lib/framework7/css/framework7.ios.min.css">
-    <link rel="stylesheet" href="lib/framework7/css/framework7.ios.colors.min.css">
-     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"> -->
-     <link rel="stylesheet" href="css/styles.css">
-     <!-- This main css file of the application -->
-     <link rel="stylesheet" href="css/main.css">
-     <link rel="stylesheet" href="/components/userDashboard/userDashboard.css">
- 
-     <!-- The core Firebase JS SDK is always required and must be listed first -->
-     <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-app.js"></script>
-     <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-firestore.js"></script>
-     <!-- TODO: Add SDKs for Firebase products that you want to use
+  <link rel="stylesheet" href="lib/framework7/css/framework7.ios.min.css">
+  <link rel="stylesheet" href="lib/framework7/css/framework7.ios.colors.min.css">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"> -->
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- This main css file of the application -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="components/userDashboard/userDashboard.css">
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-firestore.js"></script>
+  <!-- TODO: Add SDKs for Firebase products that you want to use
       https://firebase.google.com/docs/web/setup#available-libraries -->
-     <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-analytics.js"></script>
 </head>
 
 <body style='margin : 0px; overflow: hidden;'>
-    <!-- Status bar overlay for full screen mode (PhoneGap) -->
-    <div class="statusbar-overlay"></div>
+  <!-- Status bar overlay for full screen mode (PhoneGap) -->
+  <div class="statusbar-overlay"></div>
 
-    <!-- Panels overlay-->
-    <div class="panel-overlay"></div>
-    <!-- Left panel with reveal effect-->
-    <div class="panel panel-left panel-reveal">
-        <div class="content-block">
-            <p>Left panel contents goes here</p>
-        </div>
+  <!-- Panels overlay-->
+  <div class="panel-overlay"></div>
+  <!-- Left panel with reveal effect-->
+  <div class="panel panel-left panel-reveal">
+    <div class="content-block">
+      <p>Left panel contents goes here</p>
     </div>
+  </div>
 
 
-    <!-- Views -->
-    <div class="views">
-        <!-- Your main view, should have "view-main" class -->
-        <div class="view view-main">
-            <!-- Pages container, because we use fixed-through navbar and toolbar, it has additional appropriate classes-->
-            <div class="pages navbar-through toolbar-through">
-                <!-- Page, "data-page" contains page name -->
-             
-    <div data-page="loginDashBoard" class="page">
-        <div class="page-content">
+  <!-- Views -->
+  <div class="views">
+    <!-- Your main view, should have "view-main" class -->
+    <div class="view view-main">
+      <!-- Pages container, because we use fixed-through navbar and toolbar, it has additional appropriate classes-->
+      <div class="pages navbar-through toolbar-through">
+        <!-- Page, "data-page" contains page name -->
+
+        <div data-page="loginDashBoard" class="page">
+          <div class="page-content">
             <div class="content-block">
-            <div class="logo-box">
-                <img src="../../images/trees/cloud.png" alt="cloud" class="cloud-logo-left">
-                <img src="../../images/trees/cloud.png" alt="cloud" class="cloud-logo-right">
-                  
-                  <div class="bird-container bird-container--two">
-                    <div class="bird bird--two"></div>
-                  </div>
-                <div class="logo-container">
-                    <img src="../../images/Logo.png" alt="cloud" class="odyssey-logo logo-out">
+              <div class="logo-box">
+                <img src="images/trees/cloud.png" alt="cloud" class="cloud-logo-left">
+                <img src="images/trees/cloud.png" alt="cloud" class="cloud-logo-right">
+
+                <div class="bird-container bird-container--two">
+                  <div class="bird bird--two"></div>
                 </div>
-                
-            </div>
-            <div class="list">
-              <ul id="ul-signin">
-                <li class="item-content item-input">
-                  <div class="item-inner">            
-                    <div class="item-input">
-                      <input id="user-input" type="text" name="username" placeholder="Enter username">
-                    </div>
-                  </div>
-                </li>
-                <li class="item-content item-input">
-                  <div class="item-inner">
-                    <div class="item-input">
-                      <input class="password-input" type="password" name="password" placeholder="Enter password">
-                    </div>
-                  </div>
-                </li>
-                <div class="divider-loginbutton">
-                <li class="item-content item-input">
+                <div class="logo-container">
+                  <img src="images/Logo.png" alt="cloud" class="odyssey-logo logo-out">
+                </div>
+
+              </div>
+              <div class="list">
+                <ul id="ul-signin">
+                  <li class="item-content item-input">
                     <div class="item-inner">
-                        <div class="item-input">
-                          <a href="/components/userDashboard/userDashboard.html" class="col button button-fill">SIGN IN</a>
+                      <div class="item-input">
+                        <input id="user-input" type="text" name="username" placeholder="Enter username">
                       </div>
                     </div>
                   </li>
                   <li class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-input">
+                        <input class="password-input" type="password" name="password" placeholder="Enter password">
+                      </div>
+                    </div>
+                  </li>
+                  <div class="divider-loginbutton">
+                    <li class="item-content item-input">
                       <div class="item-inner">
-                        <a id="signup-link" href="/components/signUpDashBoard/signUpDashBoard.html">SIGN UP FOR AN ACCOUNT</a>
+                        <div class="item-input">
+                          <a href="components/userDashboard/userDashboard.html" class="col button button-fill">SIGN
+                            IN</a>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item-content item-input">
+                      <div class="item-inner">
+                        <a id="signup-link" href="components/signUpDashBoard/signUpDashBoard.html">SIGN UP FOR AN
+                          ACCOUNT</a>
                       </div>
                     </li>
                   </div>
                 </ul>
-                
-              </div>
-              
-      <img src="../../images/trees/tree_modern_large.png" alt="tree" class="tree-logo-one">
-      <img src="../../images/trees/tree_modern_small.png" alt="tree" class="tree-logo-two">
-      
-      <div class="mountain-container">
-          <div class="flag-container">
-              <img src="../../images/Flag.png" alt="tree" class="flag-logo">
-          </div>
-          <img src="../../images/Mountain-with-road.png" alt="tree" class="mountain-logo">
-      </div>  
-            </div>       
-        </div>
-    </div>  
-</div>
-            </div>
-        </div>
-    </div>
 
-    <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript">
-        app.initialize();
-    </script>
-     <script type="text/javascript" src="cordova.js"></script>
-     <script type="text/javascript" src="lib/framework7/js/framework7.min.js"></script>
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@0.4.0/dist/confetti.browser.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.core.min.js"></script>
-     <!-- Dashboard Component -->
-     <script type="text/javascript" src="js/my-app.js"></script>
-     <script type="text/javascript" src="components/teamSplashBoard/teamSplash.js"></script>
-     <script type="text/javascript" src="components/userDashboard/userDashboard.js"></script>
-    <!-- Replace the value of the key parameter with your own API key. -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5tQleRYOht3Ho80Muybtuz718JYXaosA"></script>
+              </div>
+
+              <img src="images/trees/tree_modern_large.png" alt="tree" class="tree-logo-one">
+              <img src="images/trees/tree_modern_small.png" alt="tree" class="tree-logo-two">
+
+              <div class="mountain-container">
+                <div class="flag-container">
+                  <img src="images/Flag.png" alt="tree" class="flag-logo">
+                </div>
+                <img src="images/Mountain-with-road.png" alt="tree" class="mountain-logo">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <script type="text/javascript" src="js/index.js"></script>
+  <script type="text/javascript">
+    app.initialize();
+  </script>
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="lib/framework7/js/framework7.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@0.4.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.core.min.js"></script>
+  <!-- Dashboard Component -->
+  <script type="text/javascript" src="js/my-app.js"></script>
+  <script type="text/javascript" src="components/teamSplashBoard/teamSplash.js"></script>
+  <script type="text/javascript" src="components/userDashboard/userDashboard.js"></script>
+  <!-- Replace the value of the key parameter with your own API key. -->
+  <script src="https://maps.googleapis.com/maps/api/js?key="></script>
 
 </body>
 

@@ -22,3 +22,7 @@
     font-size: 16px;
     height: 50px;
   }
+
+.navbar-fixed .page-content, .navbar-through .page-content {
+    padding-top: 0px;
+}
