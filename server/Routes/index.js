@@ -5,6 +5,52 @@ let api_key = require("../components/constants").API_KEY;
 let GLOBALS = require("../components/constants");
 var moment = require("moment");
 
+router.post("/register", async (req, res) => {
+  try {
+    let requestData = req.body;
+    let timestamp = moment.utc().format("YYYY-MM-DD HH:mm:ss");
+    let row = {
+      name: requestData.name,
+      email: requestData.email,
+      password: requestData.password,
+      country: requestData.country,
+      timestamp: timestamp
+    };
+    db.connection.beginTransaction(function(err) {
+      db.connection.query(
+        "select * from users where email = ?",
+        [requestData.email],
+        (err, data) => {
+          if (!data[0]) {
+            db.connection.query("insert into users set ?", row, (err, data) => {
+              if (err) {
+                db.connection.rollback();
+                re.error(res);
+              } else {
+                let responseData = {
+                  status: 1,
+                  message: "User Created",
+                  token: GLOBALS.generateToken(tokenData, GLOBALS.JWT_SECRET)
+                };
+                return re.response(responseData, res);
+              }
+            });
+          } else {
+            let responseData = {
+              status: 2,
+              message: "Email already exists. Please try a different one."
+            };
+            return re.response(responseData, res);
+          }
+        }
+      );
+    });
+  } catch (err) {
+    console.log(err);
+    return re.error(res);
+  }
+});
+
 router.post("/login", async (req, res) => {
   try {
     let data = req.body;
