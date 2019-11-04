@@ -27,12 +27,25 @@ router.post("/register", async (req, res) => {
                 db.connection.rollback();
                 re.error(res);
               } else {
-                let responseData = {
-                  status: 1,
-                  message: "User Created",
-                  token: GLOBALS.generateToken(tokenData, GLOBALS.JWT_SECRET)
-                };
-                return re.response(responseData, res);
+                db.connection.commit(err => {
+                  if (err) {
+                    db.connection.rollback();
+                    re.error(res);
+                  } else {
+                    let tokenData = {
+                      user_id: data.insertId
+                    };
+                    let responseData = {
+                      status: 1,
+                      message: "User Created",
+                      token: GLOBALS.generateToken(
+                        tokenData,
+                        GLOBALS.JWT_SECRET
+                      )
+                    };
+                    return re.response(responseData, res);
+                  }
+                });
               }
             });
           } else {
