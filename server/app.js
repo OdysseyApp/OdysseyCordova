@@ -32,7 +32,7 @@ app.use(bodyParser.json());
 
 var port = process.env.PORT || 8080;
 
-app.get("/", (req, res) => res.send("Hello from Express.js"));
+app.get("/", (req, res) => res.send("Node.js Server is running :)"));
 
 app.use("/api/", Router);
 
