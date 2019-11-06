@@ -22,17 +22,19 @@ router.post("/checkin/add", async (req, res) => {
       db.connection.query("insert into checkins set ?", row, (err, data) => {
         if (err) {
           db.connection.rollback();
+          console.log(err);
           re.error(res);
         } else {
           db.connection.commit(err => {
             if (err) {
               db.connection.rollback();
+
               re.error(res);
             } else {
               let responseData = {
                 status: 1,
                 message: "Checkin Created",
-                data: data
+                data: { id: data.insertId, ...row }
               };
               return re.response(responseData, res);
             }
