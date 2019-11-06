@@ -15,6 +15,7 @@ router.post("/checkin/add", async (req, res) => {
       location: requestData.location,
       latitude: requestData.latitude,
       longitude: requestData.longitude,
+      flag_name: requestData.flag_name,
       timestamp: timestamp
     };
     db.connection.beginTransaction(function(err) {
