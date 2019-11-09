@@ -1,5 +1,6 @@
 <div class="pages">
     <div data-page="userDashbaord" class="page">
+
         <div class="page-content">
             <!-- <div class="navbar">
                 <div class="navbar-inner">
@@ -11,18 +12,69 @@
                     </div>
                     <div class="center sliding">User Dashboard!</div>
                 </div>
-            </div> -->
+            </div> 
             <div class="content-block">
-                <div id="map"></div>
+            </div>-->
+
+            <div id="mapBackground">
+                <img src="images/logoWhite.png" alt="logo" class="logoWhite">
+                <img src="images/notificationIcon.png" alt="notification" class="notificationIcon">
+                <div id="map" class="mapHt"></div>
             </div>
-            <div style="text-align:center;">
-                <button id="checkIn" onclick="checkInAtPlace()" class='buttonDashboard'>Check-in</button>
-                <button class="buttonDashboard" onclick="showFlags()">Check for flags</button>
-                <!-- <button class="buttonDashboard" onclick="collectCoins()">Collect Coins</button> -->
+
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p style="font-weight: bold;">What is on your mind?</p>
+                    
+                    <textarea id="userThought" class="popUpInput" maxlength="50" placeholder="What is on your mind? (max: 50 words)"></textarea>
+                    
+                    <input type="submit" class="popUpSubmit" value="Submit" onclick="checkInAtPlace()">
+                </div>
             </div>
+
+            <!---------------------------------------------------------------------->
+            <!-------------------------Switch View---------------------------------->
+            <!---------------------------------------------------------------------->
+            <img src="images/expand.png" onclick="switchView()" class="switchViewBtn" id="switchView">
+
+            <!---------------------------------------------------------------------->
+            <!----------------------------------AR---------------------------------->
+            <!---------------------------------------------------------------------->
+            <img src="images/ar.png" onclick="showFlags()" class="arViewBtn" id="arView">
+
+            <!-- Timeline ---------------------------------------------------------->
+            <!-- Reference https://www.w3schools.com/howto/howto_css_timeline.asp -->
+            <!---------------------------------------------------------- Timeline -->
+
+            <div class="timeline" id="mainTimeline">
+                <div class="container right">
+                    <div class="content">
+                        <h2>Langara College</h2>
+                        <h3>11-09-2017 1:56 AM</h3>
+                        <p>Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto mnesarchum,
+                            vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua dignissim
+                            per, habeo iusto primis ea eam.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Timeline ---------------------------------------------------------->
+            <!---------------------------------------------------------------------->
+            <!---------------------------------------------------------- Timeline -->
+
         </div>
         <!-- Bottom Toolbar-->
         <div class="toolbar">
+            <div class="toolbar-inner">
+                <img src="images/iconUser.png" alt="profile" class="profileIcon">
+                <img src="images/iconLocation.png" alt="checkin" class="checkinIcon" onclick="whatsOnMind()">
+                <img src="images/iconFlag.png" alt="game" class="gameIcon">
+
+            </div>
+        </div>
+        <!-- <div class="toolbar">
             <div class="toolbar-inner">
                 <div class="left">
                     <a href="#" class="back link">
@@ -30,8 +82,9 @@
                         <span>Back</span>
                     </a>
                 </div>
-                <a href="#" class="link">Link 2</a>
+                <button id="checkIn" onclick="checkInAtPlace()" class='buttonDashboard'>Check-in</button>
+                <button class="buttonDashboard" onclick="showFlags()">Check for flags</button>
             </div>
-        </div>
+        </div> -->
     </div>
-</div>
+</div> 

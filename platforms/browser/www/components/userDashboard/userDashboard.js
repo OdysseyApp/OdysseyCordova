@@ -8,10 +8,9 @@
 //   });
 // }
 
+
 var map, infoWindow;
 function initMap() {
-
-
   // Create a new StyledMapType object, passing it an array of styles,
   // and the name to be displayed on the map type control.
   var styledMapType = new google.maps.StyledMapType(
@@ -132,7 +131,7 @@ function initMap() {
 
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: -34.397, lng: 150.644 },
-    zoom: 18,
+    zoom: 12,
     streetViewControl: false,
     mapTypeControlOptions: {
       // mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
@@ -144,7 +143,7 @@ function initMap() {
   map.setMapTypeId('styled_map');
   infoWindow = new google.maps.InfoWindow;
 
-  // Try HTML5 geolocation.
+  // HTML5 geolocation.
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (position) {
       var pos = {
@@ -181,8 +180,60 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.open(map);
 }
 
+/*************************************************************/
+/*************************************************************/
+/*******************What is on your mind? ********************/
+/*************************************************************/
+/*************************************************************/
+whatsOnMind = () => {
+
+  document.getElementById("mapBackground").classList.add("blurEffect");
+  document.getElementById("mainTimeline").classList.add("blurEffect");
+
+  var modal = document.getElementById("myModal");
+  modal.style.display = "contents";
+
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function () {
+    modal.style.display = "none";
+    document.getElementById("mapBackground").classList.remove("blurEffect");
+    document.getElementById("mainTimeline").classList.remove("blurEffect");
+  }
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+      document.getElementById("mapBackground").classList.remove("blurEffect");
+      document.getElementById("mainTimeline").classList.remove("blurEffect");
+    }
+  }
+}
+/*************************************************************/
+/************************Switch view**************************/
+/*************************************************************/
+switchView = () => {
+  document.getElementById("mainTimeline").classList.toggle('hideTimeline');
+  document.getElementById("map").classList.toggle('IncMapHt');
+  document.getElementById("switchView").classList.toggle('switchViewBtnDown');
+  document.getElementById("arView").classList.toggle('switchArViewBtnn');
+}
+
+/*************************************************************/
+/*************************************************************/
+/************************Check-in Feature ********************/
+/*************************************************************/
+/*************************************************************/
 checkInAtPlace = () => {
-  console.log("Hello Check in clicked");
+  console.log("Check in clicked");
+  document.getElementById("myModal").style.display = "none";
+  document.getElementById("mapBackground").classList.remove("blurEffect");
+  document.getElementById("mainTimeline").classList.remove("blurEffect");
+  var userThought = document.getElementById("userThought").value;
+  // Placing a flag on map
   infoWindow.close();
   navigator.geolocation.getCurrentPosition(function (position) {
     var pos = {
@@ -190,44 +241,128 @@ checkInAtPlace = () => {
       lng: position.coords.longitude
     };
 
-    var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
-    var beachMarker = new google.maps.Marker({
-      position: pos,
-      map: map,
-      icon: image
-    });
-    beachMarker.setAnimation(google.maps.Animation.BOUNCE);
-    setTimeout(function () { beachMarker.setAnimation(null); }, 4000);
+    //Get the current address
+    geoCoder(pos);
 
-    var antennasCircle = new google.maps.Circle({
-      strokeColor: "#FF0000",
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: "#FF0000",
-      fillOpacity: 0.35,
-      map: map,
-      center: pos,
-      radius: 50
-    });
-    //map.fitBounds(antennasCircle.getBounds());
+    //Timeline Entry
+    addTimelineEntry(userThought);
 
+    //Marker
 
-    // beachMarker.addListener('click', toggleBounce);
-    // function toggleBounce() {
-    //   if (beachMarker.getAnimation() !== null) {
-    //     beachMarker.setAnimation(null);
-    //   } else {
-    //     beachMarker.setAnimation(google.maps.Animation.BOUNCE);
-    //   }
-    // }
+    placeMarker(pos);
+    //Overlay
+    createOverlay(pos);
   });
 }
 
+/*************************************************************/
+/**************************Geocoder***************************/
+/*************************************************************/
+geoCoder = (pos) => {
+  //Getting the current address
+  var geocoder = new google.maps.Geocoder;
+
+  geocoder.geocode({
+    'location': pos
+  }, function (results, status) {
+    if (status === 'OK') {
+      if (results[0]) {
+
+        //This is yout formatted address
+        //alert(results[0].formatted_address);
+
+      } else {
+        //alert('No results found');
+      }
+    } else {
+      //alert('Geocoder failed due to: ' + status);
+    }
+  });
+}
+
+/*************************************************************/
+/**********************Place Marker***************************/
+/*************************************************************/
+placeMarker = (pos) => {
+  confetti.start(800);
+  var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+  var beachMarker = new google.maps.Marker({
+    position: pos,
+    map: map,
+    icon: image
+  });
+  beachMarker.setAnimation(google.maps.Animation.BOUNCE);
+  setTimeout(function () { beachMarker.setAnimation(null); }, 4000);
+}
+
+/*************************************************************/
+/**********************Create Overlays************************/
+/*************************************************************/
+createOverlay = (pos) => {
+  //Overlay Circle 
+  // var antennasCircle = new google.maps.Circle({
+  //   strokeColor: "#FF0000",
+  //   strokeOpacity: 0.8,
+  //   strokeWeight: 2,
+  //   fillColor: "#FF0000",
+  //   fillOpacity: 0.35,
+  //   map: map,
+  //   center: pos,
+  //   radius: 100,
+  // });
+  // map.fitBounds(antennasCircle.getBounds());
+
+  //Overlay Country flag
+  var imageBounds = {
+    north: parseFloat(pos.lat) + 0.012,
+    south: parseFloat(pos.lat) - 0.012,
+    east: parseFloat(pos.lng) + 0.03, //right
+    west: parseFloat(pos.lng) - 0.035 //left
+  };
+  var overlayOpts = {
+    opacity: 0.4
+  }
+  flagOverlay = new google.maps.GroundOverlay("images/overlayIndia.png",
+    imageBounds, overlayOpts);
+  flagOverlay.setMap(map);
+}
+
+/*************************************************************/
+/********************Add timeline Entry***********************/
+/*************************************************************/
+addTimelineEntry = (userThought) => {
+  // Appending the div to timeline
+  var contentContainerDiv = document.createElement('div');
+  contentContainerDiv.className = 'container right';
+  contentContainerDiv.id = "contentContainerDiv";
+  
+  var timeline = document.getElementById("mainTimeline");
+  timeline.insertBefore(contentContainerDiv, timeline.childNodes[0]);
+
+  var contentDiv = document.createElement('div');
+  contentDiv.className = 'content';
+  contentDiv.id='contentDiv';
+  document.getElementById("contentContainerDiv").appendChild(contentDiv);
+
+  var h1 = document.createElement("H1")                
+  var text = document.createTextNode(userThought);     
+  h1.appendChild(text);
+  document.getElementById("contentDiv").appendChild(h1);
+
+
+}
+
+/*************************************************************/
+/*************************************************************/
+/**************************AR Flags **************************/
+/*************************************************************/
+/*************************************************************/
 showFlags = () => {
   app.wikitudePlugin = cordova.require("com.wikitude.phonegap.WikitudePlugin.WikitudePlugin");
   loadARchitectWorld();
   //app.loadARchitectWorld();
 }
+
 //Use the following path with PhoneGap. Remove it with the Cordova build.
 //cordova.file.dataDirectory + 'www/pgday/index.html'
 loadARchitectWorld = () => {
@@ -237,7 +372,7 @@ loadARchitectWorld = () => {
     }, function errorFn(error) {
       console.log('Loading AR web view failed: ' + error);
     },
-    cordova.file.dataDirectory +  'www/pgday/index.html', ['2d_tracking'], { camera_position: 'back' }
+      cordova.file.dataDirectory + 'www/pgday/index.html', ['2d_tracking'], { camera_position: 'back' }
     );
   }, function (errorMessage) {
     console.log(errorMessage);
@@ -245,13 +380,13 @@ loadARchitectWorld = () => {
     ['2d_tracking']
   );
 }
-/*************************************************************/
-/*************************************************************/
-/**************************Coins Collection*******************/
-/*************************************************************/
-/*************************************************************/
 
-collectCoins = () => { 
+/*************************************************************/
+/*************************************************************/
+/*******************Coins Collection**************************/
+/*************************************************************/
+/*************************************************************/
+collectCoins = () => {
   app.wikitudePlugin = cordova.require("com.wikitude.phonegap.WikitudePlugin.WikitudePlugin");
   loadCoins();
 }
@@ -262,7 +397,7 @@ loadCoins = () => {
     }, function errorFn(error) {
       console.log('Loading AR web view for Coins failed: ' + error);
     },
-    cordova.file.dataDirectory +  'www/coinCollection/index.html', ['2d_tracking'], { camera_position: 'back' }
+      cordova.file.dataDirectory + 'www/coinCollection/index.html', ['2d_tracking'], { camera_position: 'back' }
     );
   }, function (errorMessage) {
     console.log(errorMessage);
@@ -270,3 +405,18 @@ loadCoins = () => {
     ['2d_tracking']
   );
 }
+
+/*************************************************************/
+/*************************************************************/
+/*******************For future references ********************/
+/*************************************************************/
+/*************************************************************/
+
+// beachMarker.addListener('click', toggleBounce);
+// function toggleBounce() {
+//   if (beachMarker.getAnimation() !== null) {
+//     beachMarker.setAnimation(null);
+//   } else {
+//     beachMarker.setAnimation(google.maps.Animation.BOUNCE);
+//   }
+// }
