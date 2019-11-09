@@ -3,7 +3,7 @@
       var myCanvas = document.createElement('canvas');
         
       myCanvas.className="confetti-canvas";
-      var bckground = document.getElementsByClassName("team-screen");
+      var bckground = document.getElementsByClassName("team-splash-page");
       bckground[0].append(myCanvas);
       console.log(bckground);
       var myConfetti = confetti.create(myCanvas, { resize: true });
