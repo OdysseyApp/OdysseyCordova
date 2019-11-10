@@ -44,6 +44,7 @@ $$(document).on('pageInit', function (e) {
 
     if (page.name === 'userDashbaord') {
         console.log("User Dashboard Page");
+        console.log(mainView);
         initMap();
     }
     if (page.name === 'team-splash') {

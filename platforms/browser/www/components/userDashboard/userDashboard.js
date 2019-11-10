@@ -372,7 +372,7 @@ loadARchitectWorld = () => {
     }, function errorFn(error) {
       console.log('Loading AR web view failed: ' + error);
     },
-      cordova.file.dataDirectory + 'www/pgday/index.html', ['2d_tracking'], { camera_position: 'back' }
+      'www/pgday/index.html', ['2d_tracking'], { camera_position: 'back' }
     );
   }, function (errorMessage) {
     console.log(errorMessage);

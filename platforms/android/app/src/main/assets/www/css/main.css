@@ -109,7 +109,7 @@ input[type=text] , input[type=password] ,input[type=email] {
     box-sizing: border-box;
     box-shadow: -1px 1px 7px -1px #697a6e;
   }
-  #country-list{
+  .country-list{
     width: 100%;
     margin: 8px 0;
     display: inline-block;
@@ -124,7 +124,7 @@ input[type=text] , input[type=password] ,input[type=email] {
     padding: 12px 40px;
     background-color: white;
   }
-  #user-input{
+  .user-input{
     background: url(../../images/user.png) no-repeat scroll 7px 7px; 
     padding-left: 30px;
     background-position: 3.2vw;

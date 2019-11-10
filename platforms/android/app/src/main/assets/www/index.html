@@ -78,18 +78,19 @@
 
               </div>
               <div class="list">
+                <label id="infoLogin"></label>
                 <ul id="ul-signin">
                   <li class="item-content item-input">
                     <div class="item-inner">
                       <div class="item-input">
-                        <input id="user-input" type="text" name="username" placeholder="Enter username">
+                        <input class="user-input" id="loginName" type="text" name="username" placeholder="Enter username">
                       </div>
                     </div>
                   </li>
                   <li class="item-content item-input">
                     <div class="item-inner">
                       <div class="item-input">
-                        <input class="password-input" type="password" name="password" placeholder="Enter password">
+                        <input class="password-input" id="loginPassword" type="password" name="password" placeholder="Enter password">
                       </div>
                     </div>
                   </li>
@@ -97,8 +98,8 @@
                     <li class="item-content item-input">
                       <div class="item-inner">
                         <div class="item-input">
-                          <a href="components/userDashboard/userDashboard.html" class="col button button-fill">SIGN
-                            IN</a>
+                          <button onclick="signIn()" class="col button button-fill">SIGN
+                            IN</button>
                         </div>
                       </div>
                     </li>
@@ -144,6 +145,10 @@
   <script type="text/javascript" src="js/my-app.js"></script>
   <script type="text/javascript" src="components/teamSplashBoard/teamSplash.js"></script>
   <script type="text/javascript" src="components/userDashboard/userDashboard.js"></script>
+  
+  <!-- Sign Up and Sign In-->
+  <script type="text/javascript" src="components/signUpDashBoard/signUpDashBoard.js"></script>
+  <script type="text/javascript" src="components/signInDashBoard/signInDashBoard.js"></script>
   
   <!-- Replace the value of the key parameter with your own API key. -->
   <script src="https://maps.googleapis.com/maps/api/js?key="></script>
