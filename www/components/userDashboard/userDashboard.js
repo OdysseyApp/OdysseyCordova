@@ -186,7 +186,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 /*************************************************************/
 /*************************************************************/
 whatsOnMind = () => {
-
+  document.getElementById("userThought").value = "";
   document.getElementById("mapBackground").classList.add("blurEffect");
   document.getElementById("mainTimeline").classList.add("blurEffect");
 
@@ -215,12 +215,36 @@ whatsOnMind = () => {
 /*************************************************************/
 /************************Switch view**************************/
 /*************************************************************/
+var visbleTeamThings = true;
 switchView = () => {
+
   document.getElementById("mainTimeline").classList.toggle('hideTimeline');
   document.getElementById("map").classList.toggle('IncMapHt');
   document.getElementById("switchView").classList.toggle('switchViewBtnDown');
   document.getElementById("arView").classList.toggle('switchArViewBtnn');
+  visbleTeamThings ? showTeamThings() : hideTeamThings();
 }
+showTeamThings = () => {
+  for (let i = 0; i < flagTeamMarkerArr.length; i++) {
+    flagTeamMarkerArr[i].setVisible(true);
+  }
+  for (let i = 0; i < flagTeamOverlayArr.length; i++) {
+    flagTeamOverlayArr[i].setMap(map);
+  }
+  visbleTeamThings = false;
+}
+hideTeamThings = () => {
+  for (let i = 0; i < flagTeamMarkerArr.length; i++) {
+    flagTeamMarkerArr[i].setVisible(false);
+  }
+  for (let i = 0; i < flagTeamOverlayArr.length; i++) {
+    flagTeamOverlayArr[i].setMap(null);
+  }
+  visbleTeamThings = true;
+}
+
+
+
 
 /*************************************************************/
 /*************************************************************/
@@ -240,24 +264,26 @@ checkInAtPlace = () => {
       lat: position.coords.latitude,
       lng: position.coords.longitude
     };
-
+    var country = "India";
     //Get the current address
     geoCoder(pos);
 
-    //Timeline Entry
-    addTimelineEntry(userThought);
-
     //Marker
+    placeMarker(pos, country);
 
-    placeMarker(pos);
     //Overlay
-    createOverlay(pos);
+    //createOverlay(pos);
+
+    //Timeline Entry
+    //addTimelineEntry(userThought);
+    setTimeout(function () { addTimelineEntry(userThought); }, 500);
   });
 }
 
 /*************************************************************/
 /**************************Geocoder***************************/
 /*************************************************************/
+var address = "A wonderful place";
 geoCoder = (pos) => {
   //Getting the current address
   var geocoder = new google.maps.Geocoder;
@@ -270,12 +296,16 @@ geoCoder = (pos) => {
 
         //This is yout formatted address
         //alert(results[0].formatted_address);
-
+        address = results[0].address_components.filter(ac => ~ac.types.indexOf('route'))[0].long_name;
+        address = address + ", " + results[0].address_components.filter(ac => ~ac.types.indexOf('locality'))[0].long_name;
+        address = address + ", " + results[0].address_components.filter(ac => ~ac.types.indexOf('administrative_area_level_1'))[0].long_name;
+        address = address + ", " + results[0].address_components.filter(ac => ~ac.types.indexOf('country'))[0].long_name;
       } else {
-        //alert('No results found');
+        //return "Location not available";
       }
     } else {
       //alert('Geocoder failed due to: ' + status);
+      //return "Location not available";
     }
   });
 }
@@ -283,48 +313,93 @@ geoCoder = (pos) => {
 /*************************************************************/
 /**********************Place Marker***************************/
 /*************************************************************/
-placeMarker = (pos) => {
+placeMarker = (pos, country) => {
+  var img = "";
+  if (country === "India") {
+    img = 'pinIndia';
+  } else if (country === "Turkey") {
+    img = 'pinTurkey';
+  } else if (country === "Brazil") {
+    img = 'pinBrazil';
+  }
   confetti.start(800);
-  var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
-  var beachMarker = new google.maps.Marker({
+  var image = {
+    url: 'images/' + img + '.png',
+    scaledSize: new google.maps.Size(40, 40), // scaled size
+    origin: new google.maps.Point(0, 0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor
+  };
+  flagMarker = new google.maps.Marker({
     position: pos,
     map: map,
     icon: image
   });
-  beachMarker.setAnimation(google.maps.Animation.BOUNCE);
-  setTimeout(function () { beachMarker.setAnimation(null); }, 4000);
+  flagMarker.setAnimation(google.maps.Animation.BOUNCE);
+  setTimeout(function () { flagMarker.setAnimation(null); }, 4000);
+}
+
+/*************************************************************/
+/*******************Place Marker of teams*********************/
+/*************************************************************/
+var flagTeamMarkerArr = [];
+placeMarkerTeam = (pos, country) => {
+  var img = "";
+  if (country === "India") {
+    img = 'pinIndia';
+  } else if (country === "Turkey") {
+    img = 'pinTurkey';
+  } else if (country === "Brazil") {
+    img = 'pinBrazil';
+  }
+  confetti.start(800);
+  var image = {
+    url: 'images/' + img + '.png',
+    scaledSize: new google.maps.Size(40, 40), // scaled size
+    origin: new google.maps.Point(0, 0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor
+  };
+  flagTeamMarker = new google.maps.Marker({
+    position: pos,
+    map: map,
+    icon: image
+  });
+  flagTeamMarkerArr.push(flagTeamMarker);
+  flagTeamMarker.setAnimation(google.maps.Animation.BOUNCE);
+  setTimeout(function () { flagTeamMarker.setAnimation(null); }, 4000);
 }
 
 /*************************************************************/
 /**********************Create Overlays************************/
 /*************************************************************/
-createOverlay = (pos) => {
-  //Overlay Circle 
-  // var antennasCircle = new google.maps.Circle({
-  //   strokeColor: "#FF0000",
-  //   strokeOpacity: 0.8,
-  //   strokeWeight: 2,
-  //   fillColor: "#FF0000",
-  //   fillOpacity: 0.35,
-  //   map: map,
-  //   center: pos,
-  //   radius: 100,
-  // });
-  // map.fitBounds(antennasCircle.getBounds());
+var flagTeamOverlayArr = [];
+createOverlay = (pos, country) => {
 
   //Overlay Country flag
+  var img = "";
+  if (country === "India") {
+    img = 'overlayIndia';
+  } else if (country === "Turkey") {
+    img = 'overlayTurey';
+  } else if (country === "Brazil") {
+    img = 'overlayBrazil';
+  }
   var imageBounds = {
-    north: parseFloat(pos.lat) + 0.012,
-    south: parseFloat(pos.lat) - 0.012,
-    east: parseFloat(pos.lng) + 0.03, //right
-    west: parseFloat(pos.lng) - 0.035 //left
+    // north: parseFloat(pos.lat) + 0.012,
+    // south: parseFloat(pos.lat) - 0.012,
+    // east: parseFloat(pos.lng) + 0.03, //right
+    // west: parseFloat(pos.lng) - 0.035 //left
+    north: parseFloat(pos.lat) + 0.018,
+    south: parseFloat(pos.lat) - 0.018,
+    east: parseFloat(pos.lng) + 0.08, //right
+    west: parseFloat(pos.lng) - 0.085 //left
   };
   var overlayOpts = {
-    opacity: 0.4
+    opacity: 0.5
   }
-  flagOverlay = new google.maps.GroundOverlay("images/overlayIndia.png",
+  flagOverlay = new google.maps.GroundOverlay("images/" + img + ".png",
     imageBounds, overlayOpts);
   flagOverlay.setMap(map);
+  flagTeamOverlayArr.push(flagOverlay);
 }
 
 /*************************************************************/
@@ -335,20 +410,30 @@ addTimelineEntry = (userThought) => {
   var contentContainerDiv = document.createElement('div');
   contentContainerDiv.className = 'container right';
   contentContainerDiv.id = "contentContainerDiv";
-  
+
   var timeline = document.getElementById("mainTimeline");
   timeline.insertBefore(contentContainerDiv, timeline.childNodes[0]);
 
   var contentDiv = document.createElement('div');
   contentDiv.className = 'content';
-  contentDiv.id='contentDiv';
+  contentDiv.id = 'contentDiv';
   document.getElementById("contentContainerDiv").appendChild(contentDiv);
 
-  var h1 = document.createElement("H1")                
-  var text = document.createTextNode(userThought);     
-  h1.appendChild(text);
-  document.getElementById("contentDiv").appendChild(h1);
+  var h3 = document.createElement("H3")
+  var text = document.createTextNode(address);
+  h3.appendChild(text);
+  document.getElementById("contentDiv").appendChild(h3);
 
+  var datetime = new Date().toLocaleString(); + " " + new Date().toLocaleTimeString();
+  var h4 = document.createElement("H4");
+  var text = document.createTextNode(datetime);
+  h4.appendChild(text);
+  document.getElementById("contentDiv").appendChild(h4);
+
+  var p = document.createElement("P");
+  var text = document.createTextNode(userThought);
+  p.appendChild(text);
+  document.getElementById("contentDiv").appendChild(p);
 
 }
 
@@ -411,7 +496,6 @@ loadCoins = () => {
 /*******************For future references ********************/
 /*************************************************************/
 /*************************************************************/
-
 // beachMarker.addListener('click', toggleBounce);
 // function toggleBounce() {
 //   if (beachMarker.getAnimation() !== null) {
@@ -419,4 +503,70 @@ loadCoins = () => {
 //   } else {
 //     beachMarker.setAnimation(google.maps.Animation.BOUNCE);
 //   }
+//  
 // }
+//Overlay Circle 
+// var antennasCircle = new google.maps.Circle({
+//   strokeColor: "#FF0000",
+//   strokeOpacity: 0.8,
+//   strokeWeight: 2,
+//   fillColor: "#FF0000",
+//   fillOpacity: 0.35,
+//   map: map,
+//   center: pos,
+//   radius: 100,
+// });
+// map.fitBounds(antennasCircle.getBounds());
+
+/*************************************************************/
+/*************************************************************/
+/************************Init Demo Overlays*******************/
+/*************************************************************/
+/*************************************************************/
+initAllDemoOverlays = () => {
+  var pos = {
+    lat: 49.183,
+    lng: -122.880
+  };
+  var country = "Brazil";
+  //Overlay
+  createOverlay(pos, country);
+}
+
+/*************************************************************/
+/*************************************************************/
+/************************Init Demo Markers********************/
+/*************************************************************/
+/*************************************************************/
+initAllDemoMarkers = () => {
+  //#a.1
+  var pos = {
+    lat: 49.183,
+    lng: -122.880
+  };
+  var country = "Turkey";
+  placeMarkerTeam(pos, country);
+  //#a.2
+  var pos = {
+    lat: 49.185,
+    lng: -122.882
+  };
+  var country = "Turkey";
+  placeMarkerTeam(pos, country);
+  //#a.3
+  var pos = {
+    lat: 49.187,
+    lng: -122.887
+  };
+  var country = "India";
+  placeMarkerTeam(pos, country);
+}
+/*************************************************************/
+/*************************************************************/
+/**********************Timeline Entry Option******************/
+/*************************************************************/
+/*************************************************************/
+function entryOptions() {
+  //Delete the timeline Entry
+
+}

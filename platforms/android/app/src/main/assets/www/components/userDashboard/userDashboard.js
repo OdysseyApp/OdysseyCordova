@@ -186,7 +186,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 /*************************************************************/
 /*************************************************************/
 whatsOnMind = () => {
-
+  document.getElementById("userThought").value = "";
   document.getElementById("mapBackground").classList.add("blurEffect");
   document.getElementById("mainTimeline").classList.add("blurEffect");
 
@@ -243,21 +243,23 @@ checkInAtPlace = () => {
 
     //Get the current address
     geoCoder(pos);
+    
+    //Marker
+    placeMarker(pos);
+    
+    //Overlay
+    //createOverlay(pos);
 
     //Timeline Entry
-    addTimelineEntry(userThought);
-
-    //Marker
-
-    placeMarker(pos);
-    //Overlay
-    createOverlay(pos);
+    //addTimelineEntry(userThought);
+    setTimeout(function(){ addTimelineEntry(userThought); }, 500);
   });
 }
 
 /*************************************************************/
 /**************************Geocoder***************************/
 /*************************************************************/
+var address = "A wonderful place";
 geoCoder = (pos) => {
   //Getting the current address
   var geocoder = new google.maps.Geocoder;
@@ -270,12 +272,16 @@ geoCoder = (pos) => {
 
         //This is yout formatted address
         //alert(results[0].formatted_address);
-
+        address = results[0].address_components.filter(ac=>~ac.types.indexOf('route'))[0].long_name;
+        address = address +", "+ results[0].address_components.filter(ac=>~ac.types.indexOf('locality'))[0].long_name;
+        address = address +", "+ results[0].address_components.filter(ac=>~ac.types.indexOf('administrative_area_level_1'))[0].long_name;
+        address = address +", "+ results[0].address_components.filter(ac=>~ac.types.indexOf('country'))[0].long_name;
       } else {
-        //alert('No results found');
+        //return "Location not available";
       }
     } else {
       //alert('Geocoder failed due to: ' + status);
+      //return "Location not available";
     }
   });
 }
@@ -285,7 +291,12 @@ geoCoder = (pos) => {
 /*************************************************************/
 placeMarker = (pos) => {
   confetti.start(800);
-  var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+  var image = {
+    url: 'images/pinIndia.png',
+    scaledSize: new google.maps.Size(40, 40), // scaled size
+    origin: new google.maps.Point(0, 0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor
+  };
   var beachMarker = new google.maps.Marker({
     position: pos,
     map: map,
@@ -314,10 +325,14 @@ createOverlay = (pos) => {
 
   //Overlay Country flag
   var imageBounds = {
-    north: parseFloat(pos.lat) + 0.012,
-    south: parseFloat(pos.lat) - 0.012,
-    east: parseFloat(pos.lng) + 0.03, //right
-    west: parseFloat(pos.lng) - 0.035 //left
+    // north: parseFloat(pos.lat) + 0.012,
+    // south: parseFloat(pos.lat) - 0.012,
+    // east: parseFloat(pos.lng) + 0.03, //right
+    // west: parseFloat(pos.lng) - 0.035 //left
+    north: parseFloat(pos.lat) + 0.018,
+    south: parseFloat(pos.lat) - 0.018,
+    east: parseFloat(pos.lng) + 0.08, //right
+    west: parseFloat(pos.lng) - 0.085 //left
   };
   var overlayOpts = {
     opacity: 0.4
@@ -344,11 +359,21 @@ addTimelineEntry = (userThought) => {
   contentDiv.id='contentDiv';
   document.getElementById("contentContainerDiv").appendChild(contentDiv);
 
-  var h1 = document.createElement("H1")                
-  var text = document.createTextNode(userThought);     
-  h1.appendChild(text);
-  document.getElementById("contentDiv").appendChild(h1);
+  var h3 = document.createElement("H3")                
+  var text = document.createTextNode(address);     
+  h3.appendChild(text);
+  document.getElementById("contentDiv").appendChild(h3); 
 
+  var datetime = new Date().toLocaleString(); + " " + new Date().toLocaleTimeString();
+  var h4 = document.createElement("H4")                
+  var text = document.createTextNode(datetime);     
+  h4.appendChild(text);
+  document.getElementById("contentDiv").appendChild(h4);  
+
+  var p = document.createElement("P")                
+  var text = document.createTextNode(userThought);     
+  p.appendChild(text);
+  document.getElementById("contentDiv").appendChild(p);
 
 }
 
@@ -420,3 +445,31 @@ loadCoins = () => {
 //     beachMarker.setAnimation(google.maps.Animation.BOUNCE);
 //   }
 // }
+
+/*************************************************************/
+/*************************************************************/
+/************************Init Demo Overlays*******************/
+/*************************************************************/
+/*************************************************************/
+initAllDemoOverlays=()=> {
+  var pos = {
+    lat: 49.397,
+    lng: -122.975
+  };
+  //Overlay
+  createOverlay(pos);
+}
+
+/*************************************************************/
+/*************************************************************/
+/************************Init Demo Markers********************/
+/*************************************************************/
+/*************************************************************/
+initAllDemoMarkers=()=> {
+  var pos = {
+    lat: 49.397,
+    lng: -122.975
+  };
+  //Marker
+  placeMarker(pos);
+}
