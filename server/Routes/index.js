@@ -75,10 +75,8 @@ router.get("/checkin/list/:id", async (req, res) => {
 });
 
 router.get("/checkin/all", async (req, res) => {
-  let user_id = req.params.id;
-
   try {
-    db.connection.query("select * from checkins", [user_id], (err, data) => {
+    db.connection.query("select * from checkins", (err, data) => {
       if (err) return re.error(res);
       else {
         let responseData = {
