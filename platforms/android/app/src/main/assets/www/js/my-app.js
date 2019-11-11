@@ -44,7 +44,10 @@ $$(document).on('pageInit', function (e) {
 
     if (page.name === 'userDashbaord') {
         console.log("User Dashboard Page");
+        console.log(mainView);
         initMap();
+        initAllDemoOverlays();
+        initAllDemoMarkers();
     }
     if (page.name === 'team-splash') {
         confettiAnimation();    

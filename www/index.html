@@ -25,8 +25,7 @@
 
   <!-- Your app title -->
   <title>Odyssey</title>
-
-  <link rel="stylesheet" href="lib/framework7/css/framework7.ios.min.css">
+  <link rel="stylesheet" href="lib/framework7/css/framework7.ios.css">
   <link rel="stylesheet" href="lib/framework7/css/framework7.ios.colors.min.css">
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"> -->
   <link rel="stylesheet" href="css/styles.css">
@@ -79,18 +78,19 @@
 
               </div>
               <div class="list">
+                <label id="infoLogin"></label>
                 <ul id="ul-signin">
                   <li class="item-content item-input">
                     <div class="item-inner">
                       <div class="item-input">
-                        <input id="user-input" type="text" name="username" placeholder="Enter username">
+                        <input class="user-input" id="loginName" type="text" name="username" placeholder="Enter username">
                       </div>
                     </div>
                   </li>
                   <li class="item-content item-input">
                     <div class="item-inner">
                       <div class="item-input">
-                        <input class="password-input" type="password" name="password" placeholder="Enter password">
+                        <input class="password-input" id="loginPassword" type="password" name="password" placeholder="Enter password">
                       </div>
                     </div>
                   </li>
@@ -98,8 +98,8 @@
                     <li class="item-content item-input">
                       <div class="item-inner">
                         <div class="item-input">
-                          <a href="components/userDashboard/userDashboard.html" class="col button button-fill">SIGN
-                            IN</a>
+                          <button onclick="signIn()" class="col button button-fill">SIGN
+                            IN</button>
                         </div>
                       </div>
                     </li>
@@ -140,13 +140,21 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@0.4.0/dist/confetti.browser.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.core.min.js"></script>
+  
   <!-- Dashboard Component -->
   <script type="text/javascript" src="js/my-app.js"></script>
   <script type="text/javascript" src="components/teamSplashBoard/teamSplash.js"></script>
   <script type="text/javascript" src="components/userDashboard/userDashboard.js"></script>
+  
+  <!-- Sign Up and Sign In-->
+  <script type="text/javascript" src="components/signUpDashBoard/signUpDashBoard.js"></script>
+  <script type="text/javascript" src="components/signInDashBoard/signInDashBoard.js"></script>
+  
   <!-- Replace the value of the key parameter with your own API key. -->
   <script src="https://maps.googleapis.com/maps/api/js?key="></script>
-
-</body>
+  
+  <!-- https://github.com/mathusummut/confetti.js (MIT License)-->
+  <script src="https://cdn.jsdelivr.net/gh/mathusummut/confetti.js/confetti.min.js"></script>
+ </body>
 
 </html>
