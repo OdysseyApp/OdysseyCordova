@@ -74,6 +74,28 @@ router.get("/checkin/list/:id", async (req, res) => {
   }
 });
 
+router.get("/checkin/all", async (req, res) => {
+  let user_id = req.params.id;
+
+  try {
+    db.connection.query("select * from checkins", [user_id], (err, data) => {
+      if (err) return re.error(res);
+      else {
+        let responseData = {
+          status: 1,
+          message: "Checkins List",
+          data: data
+        };
+
+        return re.response(responseData, res);
+      }
+    });
+  } catch (err) {
+    // console.log(err);
+    return await re.error(res);
+  }
+});
+
 router.post("/register", async (req, res) => {
   try {
     let requestData = req.body;
@@ -154,6 +176,7 @@ router.post("/login", async (req, res) => {
               let responseData = {
                 status: 1,
                 message: "User Found",
+                user_id: data[0].id,
                 token: GLOBALS.generateToken(tokenData, GLOBALS.JWT_SECRET)
               };
               return re.response(responseData, res);
