@@ -2,6 +2,7 @@
     <div data-page="signUpDashBoard" class="page">
         <div class="page-content">
             <div class="content-block">
+                
             <div class="logo-box">
                 <img src="images/trees/cloud.png" alt="cloud" class="cloud-logo-left-signup">
                 <img src="images/trees/cloud.png" alt="cloud" class="cloud-logo-right-signup">
@@ -37,7 +38,7 @@
                 <li class="item-content item-input">
                     <div class="item-inner">
                       <div class="item-input">
-                        <input class="password-input" type="password" name="password" placeholder="Confirm password">
+                        <input id="userPassword2" class="password-input" type="password" name="password" placeholder="Confirm password">
                       </div>
                     </div>
                   </li>
@@ -46,10 +47,11 @@
                       <div class="item-input">
                         <select id="userCountry" class="country-list">
                             <option value="" disabled selected>Select your country</option>
-                          <option value="Canada">Canada</option>
+                          <option value="South Korea">South Korea</option>
                           <option value="India">India</option>
                           <option value="Turkey">Turkey</option>
                           <option value="Russia">Russia</option>
+                          <option value="Brazil">Brazil</option>
 
                         </select>
                       </div>
@@ -59,7 +61,8 @@
                 <li class="item-content item-input">
                     <div class="item-inner">
                         <div class="item-input">
-                          <button onclick="signUp()" class="col button button-fill">SIGN UP</button>
+                          <button onclick="ValidateAccount()" class="col button button-fill alert-text">SIGN UP</button>
+                          <!-- <a href="components/teamSplashBoard/teamSplash.html" class="col button button-fill">Sign UP</a> -->
                       </div>
                     </div>
                   </li>

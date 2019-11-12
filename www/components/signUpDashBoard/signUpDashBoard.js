@@ -5,12 +5,17 @@
 //     // loginPage.classList.add('animated', 'flipInY');
 //   });
 // });
+var myApp = new Framework7();
+
+var $$ = Dom7;
+
 signUp = () => {
 
     let name = document.getElementById('userName').value ;
     let email = document.getElementById('userEmail').value ;
     let password = document.getElementById('userPassword').value ;
     let country = document.getElementById('userCountry').value ;
+    
 
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
     const url = "http://34.221.179.153:8080/api/register"; 
@@ -31,13 +36,98 @@ signUp = () => {
         .then(res => {
             console.log(res);
             $("#info").text(res.message);
+            if(res.message === "Email already exists. Please try a different one."){
+                // Alert
+                    myApp.alert(res.message, 'Error!');
+            }
             if(res.message === "User Created") {
                 //This took me fucking 5 hours to find:
                 mainView.router.load({                   
                     url: "components/teamSplashBoard/teamSplash.html",
-                    ignoreChache: true,
-                    reload: true                    
-                });
+                    ignoreCache: true,
+                    reload: true ,
+             
+                }); 
+               
             }
         });
+        
+}
+function ValidateAccount()
+{
+    let emailDiv = document.getElementById('userEmail');
+    let nameDiv = document.getElementById("userName");
+    let pwDiv = document.getElementById("userPassword");
+    let pwDiv2 = document.getElementById("userPassword2");
+    let countryDiv = document.getElementById("userCountry");
+
+    let name = document.getElementById('userName').value ;
+    let password = document.getElementById('userPassword').value ;
+    let secondPassword = document.getElementById('userPassword2').value ;
+    let country = document.getElementById('userCountry').value ;
+    let email = document.getElementById('userEmail').value ;
+
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if(name == ""){
+        nameDiv.placeholder = "Enter an username!"
+        nameDiv.style.border = '3px solid red';
+        nameDiv.style.boxShadow = "-1px 1px 15px -1px red";
+        nameDiv.value = "";
+        nameDiv.focus();
+        return false; 
+    }
+    if(email.match(mailformat) === null)
+    {
+        emailDiv.style.border = '3px solid red';
+        emailDiv.style.border = '3px solid red';
+        emailDiv.style.boxShadow = "-1px 1px 15px -1px red";
+        emailDiv.value = "";
+        emailDiv.focus();
+        emailDiv.placeholder = 'Enter a valid email address!';
+        return false;
+    }
+    if(password == ""){
+        pwDiv.placeholder = "Enter a password ! (Required)"
+        pwDiv.style.border = '3px solid red';
+        pwDiv.style.boxShadow = "-1px 1px 15px -1px red";
+        pwDiv.value = "";
+        pwDiv.focus();
+        return false; 
+    }
+    if(secondPassword == ""){
+        pwDiv2.placeholder = "Please enter confirm password ! (Required)"
+        pwDiv2.style.border = '3px solid red';
+        pwDiv2.style.boxShadow = "-1px 1px 15px -1px red";
+        pwDiv2.value = "";
+        pwDiv2.focus();
+        return false; 
+    }
+     if (password != secondPassword) { 
+        pwDiv.placeholder = "Password did not match!"
+        pwDiv2.placeholder = "Password did not match!"
+        pwDiv2.style.border = '3px solid red';
+        pwDiv2.style.boxShadow = "-1px 1px 15px -1px red";
+        pwDiv.style.border = '3px solid red';
+        pwDiv.style.boxShadow = "-1px 1px 15px -1px red";
+        pwDiv.value = "";
+        pwDiv2.value = "";
+        pwDiv.value = "";
+        return false; 
+    } 
+    if(country == ""){
+        countryDiv.placeholder = "Select your country!"
+        pwDiv2.style.border = '3px solid red';
+        pwDiv2.style.boxShadow = "-1px 1px 15px -1px red";
+        countryDiv.focus();
+        return false; 
+    }
+   
+     else
+    {
+       signUp();
+       var storage = window.localStorage;
+       storage.setItem("country",country);
+       storage.setItem("email",email);
+    }
 }

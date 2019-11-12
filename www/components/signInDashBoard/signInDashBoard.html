@@ -15,14 +15,14 @@
             <li class="item-content item-input">
               <div class="item-inner">
                 <div class="item-input">
-                  <input class="user-input" type="text" name="username" placeholder="Enter username">
+                  <input id="userNonAnim" class="user-input" type="text" name="username" placeholder="Enter email">
                 </div>
               </div>
             </li>
             <li class="item-content item-input">
               <div class="item-inner">
                 <div class="item-input">
-                  <input class="password-input" type="password" name="password" placeholder="Enter password">
+                  <input id="pwNonAnim" class="password-input" type="password" name="password" placeholder="Enter password">
                 </div>
               </div>
             </li>
@@ -30,7 +30,8 @@
               <li class="item-content item-input">
                 <div class="item-inner">
                   <div class="item-input">
-                    <a href="components/userDashboard/userDashboard.html" class="col button button-fill">Sign in</a>
+                    <button onclick="ValidateSignIn()" class="col button button-fill">SIGN
+                      IN</button>  
                   </div>
                 </div>
               </li>

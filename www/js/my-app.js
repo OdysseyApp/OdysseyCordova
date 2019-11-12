@@ -48,7 +48,8 @@ $$(document).on('pageInit', function (e) {
         initMap();
     }
     if (page.name === 'team-splash') {
-        confettiAnimation();    
+       
+        changeTeamFlag();
     }
 })
 
