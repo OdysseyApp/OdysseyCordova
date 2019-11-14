@@ -75,17 +75,18 @@
     top: 16vh;
     position: relative;
 }
+/**********************************************************/
+/******************Form Control****************************/
+/**********************************************************/
 
-/* .list ul li:nth-child(3)> button{
-    background-color: antiquewhite;
-} */
-/* .list ul li:nth-child(1){
-    width: 40vh;
-    margin-left: auto;
-    margin-right: auto;
-} */
+#userEmail{
+    
+}
+/**********************************************************/
+/******************Form Control****************************/
+/**********************************************************/
 .divider-loginbutton{
-    margin-top: 7vh;
+    margin-top: 4vh;
     width: 60%;
     margin-left: auto;
     margin-right: auto;
@@ -118,7 +119,7 @@ input[type=text] , input[type=password] ,input[type=email] {
     border-radius: 20px;
     box-sizing: border-box;
     box-shadow: -1px 1px 7px -1px #697a6e;
-    background: url(../../images/worldwide.png) no-repeat scroll 8px 8px; 
+    background: url(../../images/world.png) no-repeat scroll 8px 8px; 
     padding-left: 30px;
     background-position: 3.2vw;
     padding: 12px 40px;
@@ -494,7 +495,7 @@ hr {
   
     100% {
         visibility: visible;
-        transform: translateY(100px) ;
+        transform: translateY(160px) ;
         
     }
 }
@@ -785,15 +786,15 @@ hr {
     animation: slide-in-teamflag 1s 6s forwards;  
     
 }
-.assign-flag{
+#assign-flag{
     
     animation: bounce-in-top 1.5s both,flip-vertical-right 0.8s  6.5s  cubic-bezier(0.455, 0.030, 0.515, 0.955) ;
+    width: 100%;
 }
 .team-info{
     font-size: 2em;
     animation: slide-in-right 0.5s 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
-
 
 @keyframes bounce-in-top {
     0% {

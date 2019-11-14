@@ -1,14 +1,17 @@
-// var map;
-// function initMap() {
-//   console.log("Trying to display map");  
-//   map = new google.maps.Map(document.getElementById('map'), {
-//     center: {lat: 49.246292, lng: -123.116226},
-//     zoom: 6,
-//     mapTypeId: 'hybrid'
-//   });
-// }
 
+/*************************************************************/
+/************************Variable declaraion******************/
+/*************************************************************/
 
+var countryFlagCount = {
+  IndiaFlagsCount: 1,
+  TurkeyFlagsCount: 2,
+  SouthkoreaFlagsCount: 0,
+  BrazilFlagsCount: 0,
+  RussiaFlagsCount: 0
+}
+
+/*************************************************************/
 var map, infoWindow;
 function initMap() {
   // Create a new StyledMapType object, passing it an array of styles,
@@ -215,17 +218,55 @@ whatsOnMind = () => {
 /*************************************************************/
 /************************Switch view**************************/
 /*************************************************************/
+var visbleTeamThings = true;
 switchView = () => {
+
   document.getElementById("mainTimeline").classList.toggle('hideTimeline');
   document.getElementById("map").classList.toggle('IncMapHt');
   document.getElementById("switchView").classList.toggle('switchViewBtnDown');
   document.getElementById("arView").classList.toggle('switchArViewBtnn');
+  visbleTeamThings ? showTeamThings() : hideTeamThings();
 }
+showTeamThings = () => {
+  for (let i = 0; i < flagTeamMarkerArr.length; i++) {
+    flagTeamMarkerArr[i].setVisible(true);
+  }
+  for (let i = 0; i < flagTeamOverlayArr.length; i++) {
+    flagTeamOverlayArr[i].setMap(map);
+  }
+  visbleTeamThings = false;
+}
+hideTeamThings = () => {
+  for (let i = 0; i < flagTeamMarkerArr.length; i++) {
+    flagTeamMarkerArr[i].setVisible(false);
+  }
+  for (let i = 0; i < flagTeamOverlayArr.length; i++) {
+    flagTeamOverlayArr[i].setMap(null);
+  }
+  visbleTeamThings = true;
+}
+/*************************************************************/
+/*************************************************************/
+/*************************************************************/
 
 /*************************************************************/
 /*************************************************************/
 /************************Check-in Feature ********************/
 /*************************************************************/
+/*************************************************************/
+var currentPosition;
+var currentPositionConst; //Dont modify this variable in code.
+/************************Loading Location ********************/
+loadCurrentLocation = () => {
+  navigator.geolocation.getCurrentPosition(function (position) {
+    var pos = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    };
+    currentPosition = pos;
+    currentPositionConst = pos;
+  });
+}
 /*************************************************************/
 checkInAtPlace = () => {
   console.log("Check in clicked");
@@ -237,22 +278,29 @@ checkInAtPlace = () => {
   infoWindow.close();
   navigator.geolocation.getCurrentPosition(function (position) {
     var pos = {
+      lat: position.coords.latitude + parseFloat((Math.random() / 100).toFixed(4)),
+      lng: position.coords.longitude + parseFloat((Math.random() / 100).toFixed(4))
+    };
+    //currentPosition=pos;
+    var country = "India";
+    //Get the current address
+    geoCoder(currentPosition);
+
+    //Marker 
+    placeMarker(pos, country);
+
+    //Overlay
+    //createOverlay(pos);
+    //Timeline Entry
+    //addTimelineEntry(userThought);
+    setTimeout(function () { addTimelineEntry(userThought); }, 500);
+  });
+  navigator.geolocation.getCurrentPosition(function (position) {
+    var pos = {
       lat: position.coords.latitude,
       lng: position.coords.longitude
     };
-
-    //Get the current address
-    geoCoder(pos);
-    
-    //Marker
-    placeMarker(pos);
-    
-    //Overlay
-    //createOverlay(pos);
-
-    //Timeline Entry
-    //addTimelineEntry(userThought);
-    setTimeout(function(){ addTimelineEntry(userThought); }, 500);
+    setTimeout(function () { updateAllOverlaysBatch(pos);}, 500);
   });
 }
 
@@ -272,10 +320,10 @@ geoCoder = (pos) => {
 
         //This is yout formatted address
         //alert(results[0].formatted_address);
-        address = results[0].address_components.filter(ac=>~ac.types.indexOf('route'))[0].long_name;
-        address = address +", "+ results[0].address_components.filter(ac=>~ac.types.indexOf('locality'))[0].long_name;
-        address = address +", "+ results[0].address_components.filter(ac=>~ac.types.indexOf('administrative_area_level_1'))[0].long_name;
-        address = address +", "+ results[0].address_components.filter(ac=>~ac.types.indexOf('country'))[0].long_name;
+        // address = results[0].address_components.filter(ac => ~ac.types.indexOf('locality'))[0].long_name;
+        address = results[0].address_components.filter(ac => ~ac.types.indexOf('administrative_area_level_2'))[0].long_name;
+        address = address + ", " + results[0].address_components.filter(ac => ~ac.types.indexOf('administrative_area_level_1'))[0].long_name;
+        address = address + ", " + results[0].address_components.filter(ac => ~ac.types.indexOf('country'))[0].long_name;
       } else {
         //return "Location not available";
       }
@@ -289,41 +337,90 @@ geoCoder = (pos) => {
 /*************************************************************/
 /**********************Place Marker***************************/
 /*************************************************************/
-placeMarker = (pos) => {
-  confetti.start(800);
+placeMarker = (pos, country) => {
+  var img = "";
+  if (country === "India") {
+    img = 'pinIndia';
+    countryFlagCount.IndiaFlagsCount++;
+  } else if (country === "Turkey") {
+    img = 'pinTurkey';
+    countryFlagCount.TurkeyFlagsCount++;
+  } else if (country === "Brazil") {
+    img = 'pinBrazil';
+    countryFlagCount.BrazilFlagsCount++;
+  } else if (country === "Southkorea") {
+    img = 'pinSouthkorea';
+    countryFlagCount.SouthkoreaFlagsCount++;
+  } else if (country === "Russia") {
+    img = 'pinRussia';
+    countryFlagCount.RussiaFlagsCount++;
+  }
+  //confetti.start(800);
   var image = {
-    url: 'images/pinIndia.png',
+    url: 'images/' + img + '.png',
     scaledSize: new google.maps.Size(40, 40), // scaled size
     origin: new google.maps.Point(0, 0), // origin
     anchor: new google.maps.Point(0, 0) // anchor
   };
-  var beachMarker = new google.maps.Marker({
+  flagMarker = new google.maps.Marker({
     position: pos,
     map: map,
     icon: image
   });
-  beachMarker.setAnimation(google.maps.Animation.BOUNCE);
-  setTimeout(function () { beachMarker.setAnimation(null); }, 4000);
+  flagMarker.setAnimation(google.maps.Animation.BOUNCE);
+  setTimeout(function () { flagMarker.setAnimation(null); }, 4000);
+}
+
+/*************************************************************/
+/*******************Place Marker of teams*********************/
+/*************************************************************/
+var flagTeamMarkerArr = [];
+placeMarkerTeam = (pos, country) => {
+  var img = "";
+  if (country === "India") {
+    img = 'pinIndia';
+  } else if (country === "Turkey") {
+    img = 'pinTurkey';
+  } else if (country === "Brazil") {
+    img = 'pinBrazil';
+  } else if (country === "Southkorea") {
+    img = 'pinSouthkorea';
+  } else if (country === "Russia") {
+    img = 'pinRussia';
+  }
+  //confetti.start(800);
+  var image = {
+    url: 'images/' + img + '.png',
+    scaledSize: new google.maps.Size(40, 40), // scaled size
+    origin: new google.maps.Point(0, 0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor
+  };
+  flagTeamMarker = new google.maps.Marker({
+    position: pos,
+    map: map,
+    icon: image
+  });
+  flagTeamMarkerArr.push(flagTeamMarker);
+  flagTeamMarker.setAnimation(google.maps.Animation.BOUNCE);
+  setTimeout(function () { flagTeamMarker.setAnimation(null); }, 4000);
 }
 
 /*************************************************************/
 /**********************Create Overlays************************/
 /*************************************************************/
-createOverlay = (pos) => {
-  //Overlay Circle 
-  // var antennasCircle = new google.maps.Circle({
-  //   strokeColor: "#FF0000",
-  //   strokeOpacity: 0.8,
-  //   strokeWeight: 2,
-  //   fillColor: "#FF0000",
-  //   fillOpacity: 0.35,
-  //   map: map,
-  //   center: pos,
-  //   radius: 100,
-  // });
-  // map.fitBounds(antennasCircle.getBounds());
-
+var flagTeamOverlayArr = [];
+createOverlay = (pos, country) => {
   //Overlay Country flag
+  var img = "";
+  if (country === "India") {
+    img = 'overlayIndia';
+  } else if (country === "Turkey") {
+    img = 'overlayTurkey';
+  } else if (country === "Brazil") {
+    img = 'overlayBrazil';
+  } else if (country === "Southkorea") {
+    img = 'overlaySouthkorea';
+  }
   var imageBounds = {
     // north: parseFloat(pos.lat) + 0.012,
     // south: parseFloat(pos.lat) - 0.012,
@@ -331,16 +428,67 @@ createOverlay = (pos) => {
     // west: parseFloat(pos.lng) - 0.035 //left
     north: parseFloat(pos.lat) + 0.018,
     south: parseFloat(pos.lat) - 0.018,
-    east: parseFloat(pos.lng) + 0.08, //right
-    west: parseFloat(pos.lng) - 0.085 //left
+    east: parseFloat(pos.lng) + 0.04, //right
+    west: parseFloat(pos.lng) - 0.055 //left
   };
   var overlayOpts = {
-    opacity: 0.4
+    opacity: 0.3
   }
-  flagOverlay = new google.maps.GroundOverlay("images/overlayIndia.png",
+  flagOverlay = new google.maps.GroundOverlay("images/" + img + ".png",
     imageBounds, overlayOpts);
   flagOverlay.setMap(map);
+  flagTeamOverlayArr.push(flagOverlay);
 }
+
+/*************************************************************/
+/********************Update Overlays Batch********************/
+/*************************************************************/
+
+updateAllOverlaysBatch = (pos) => {
+  console.log(countryFlagCount.IndiaFlagsCount);
+  if (countryFlagCount.IndiaFlagsCount > countryFlagCount.TurkeyFlagsCount) {
+    // if (findMax(countryFlagCount) === "TurkeyFlagsCount") {
+    //   var country = "Turkey";
+    // } else if (findMax(countryFlagCount) === "IndiaFlagsCount") {
+    //   var country = "India";
+    // }
+    var country = "India";
+    if (country === "India") {
+      img = 'overlayIndia';
+    } else if (country === "Turkey") {
+      img = 'overlayTurkey';
+    } else if (country === "Brazil") {
+      img = 'overlayBrazil';
+    } else if (country === "Southkorea") {
+      img = 'overlaySouthkorea';
+    }
+    var imageBounds = {
+      // north: parseFloat(pos.lat) + 0.012,
+      // south: parseFloat(pos.lat) - 0.012,
+      // east: parseFloat(pos.lng) + 0.03, //right
+      // west: parseFloat(pos.lng) - 0.035 //left
+      north: parseFloat(pos.lat) + 0.018,
+      south: parseFloat(pos.lat) - 0.018,
+      east: parseFloat(pos.lng) + 0.04, //right
+      west: parseFloat(pos.lng) - 0.055 //left
+    };
+    var overlayOpts = {
+      opacity: 0.8
+    }
+    flagOverlay = new google.maps.GroundOverlay("images/" + img + ".png",
+      imageBounds, overlayOpts);
+    flagOverlay.setMap(map);
+    flagTeamOverlayArr.push(flagOverlay);
+    // setTimeout(function () { hideTeamThings();}, 1000);
+    // flagOverlay.setMap(null);
+    if(visbleTeamThings) {
+      flagOverlay.setMap(null);
+    } else {
+      flagOverlay.setMap(map);
+    }
+  }
+}
+
 
 /*************************************************************/
 /********************Add timeline Entry***********************/
@@ -350,28 +498,28 @@ addTimelineEntry = (userThought) => {
   var contentContainerDiv = document.createElement('div');
   contentContainerDiv.className = 'container right';
   contentContainerDiv.id = "contentContainerDiv";
-  
+
   var timeline = document.getElementById("mainTimeline");
   timeline.insertBefore(contentContainerDiv, timeline.childNodes[0]);
 
   var contentDiv = document.createElement('div');
   contentDiv.className = 'content';
-  contentDiv.id='contentDiv';
+  contentDiv.id = 'contentDiv';
   document.getElementById("contentContainerDiv").appendChild(contentDiv);
 
-  var h3 = document.createElement("H3")                
-  var text = document.createTextNode(address);     
+  var h3 = document.createElement("H3")
+  var text = document.createTextNode(address);
   h3.appendChild(text);
-  document.getElementById("contentDiv").appendChild(h3); 
+  document.getElementById("contentDiv").appendChild(h3);
 
   var datetime = new Date().toLocaleString(); + " " + new Date().toLocaleTimeString();
-  var h4 = document.createElement("H4")                
-  var text = document.createTextNode(datetime);     
+  var h4 = document.createElement("H4");
+  var text = document.createTextNode(datetime);
   h4.appendChild(text);
-  document.getElementById("contentDiv").appendChild(h4);  
+  document.getElementById("contentDiv").appendChild(h4);
 
-  var p = document.createElement("P")                
-  var text = document.createTextNode(userThought);     
+  var p = document.createElement("P");
+  var text = document.createTextNode(userThought);
   p.appendChild(text);
   document.getElementById("contentDiv").appendChild(p);
 
@@ -386,7 +534,7 @@ showFlags = () => {
   app.wikitudePlugin = cordova.require("com.wikitude.phonegap.WikitudePlugin.WikitudePlugin");
   loadARchitectWorld();
   //app.loadARchitectWorld();
-}
+} 
 
 //Use the following path with PhoneGap. Remove it with the Cordova build.
 //cordova.file.dataDirectory + 'www/pgday/index.html'
@@ -394,10 +542,10 @@ loadARchitectWorld = () => {
   //console.log(cordova.file.dataDirectory);
   app.wikitudePlugin.isDeviceSupported(function () {
     app.wikitudePlugin.loadARchitectWorld(function successFn(loadedURL) {
-    }, function errorFn(error) {
+    }, function errorFn(error) { 
       console.log('Loading AR web view failed: ' + error);
     },
-      'www/pgday/index.html', ['2d_tracking'], { camera_position: 'back' }
+    'www/pgday/index.html', ['2d_tracking'], { camera_position: 'back' }
     );
   }, function (errorMessage) {
     console.log(errorMessage);
@@ -433,31 +581,20 @@ loadCoins = () => {
 
 /*************************************************************/
 /*************************************************************/
-/*******************For future references ********************/
-/*************************************************************/
-/*************************************************************/
-
-// beachMarker.addListener('click', toggleBounce);
-// function toggleBounce() {
-//   if (beachMarker.getAnimation() !== null) {
-//     beachMarker.setAnimation(null);
-//   } else {
-//     beachMarker.setAnimation(google.maps.Animation.BOUNCE);
-//   }
-// }
-
-/*************************************************************/
-/*************************************************************/
 /************************Init Demo Overlays*******************/
 /*************************************************************/
 /*************************************************************/
-initAllDemoOverlays=()=> {
+initAllDemoOverlays = () => {
+  //#1
+  var country = "Turkey";
+  createOverlay(currentPositionConst, country);
+  //#2
+  var country = "Brazil";
   var pos = {
-    lat: 49.397,
-    lng: -122.975
+    lat: 49.267132,
+    lng: -122.968941
   };
-  //Overlay
-  createOverlay(pos);
+  createOverlay(pos, country);
 }
 
 /*************************************************************/
@@ -465,11 +602,120 @@ initAllDemoOverlays=()=> {
 /************************Init Demo Markers********************/
 /*************************************************************/
 /*************************************************************/
-initAllDemoMarkers=()=> {
+initAllDemoMarkers = () => {
+  //Demo Current location
+  //#a.1
+  currentPosition.lat = currentPosition.lat + parseFloat((Math.random() / 100).toFixed(4));
+  currentPosition.lng = currentPosition.lng + parseFloat((Math.random() / 100).toFixed(4));
+  var country = "Turkey";
+  placeMarkerTeam(currentPosition, country);
+  //#a.2
+  currentPosition.lat = currentPosition.lat + parseFloat((Math.random() / 100).toFixed(4));
+  currentPosition.lng = currentPosition.lng + parseFloat((Math.random() / 100).toFixed(4));
+  var country = "Turkey";
+  placeMarkerTeam(currentPosition, country);
+  //#a.3
+  currentPosition.lat = currentPosition.lat + parseFloat((Math.random() / 100).toFixed(4));
+  currentPosition.lng = currentPosition.lng + parseFloat((Math.random() / 100).toFixed(4));
+  var country = "India";
+  placeMarkerTeam(currentPosition, country);
+
+  //Demo Brazil & Korea
+  //b.1
   var pos = {
-    lat: 49.397,
-    lng: -122.975
+    lat: 49.267132 + parseFloat((Math.random() / 100).toFixed(4)),
+    lng: -122.968941 + parseFloat((Math.random() / 100).toFixed(4))
   };
-  //Marker
-  placeMarker(pos);
+  var country = "Southkorea";
+  placeMarkerTeam(pos, country);
+  //b.2
+  var pos = {
+    lat: 49.267132 + parseFloat((Math.random() / 100).toFixed(4)),
+    lng: -122.968941 + parseFloat((Math.random() / 100).toFixed(4))
+  };
+  var country = "Southkorea";
+  placeMarkerTeam(pos, country);
+  //b.3
+  var pos = {
+    lat: 49.267132 + parseFloat((Math.random() / 100).toFixed(4)),
+    lng: -122.968941 + parseFloat((Math.random() / 100).toFixed(4))
+  };
+  var country = "Brazil";
+  placeMarkerTeam(pos, country);
+  //b.4
+  var pos = {
+    lat: 49.267132 + parseFloat((Math.random() / 100).toFixed(4)),
+    lng: -122.968941 + parseFloat((Math.random() / 100).toFixed(4))
+  };
+  var country = "Brazil";
+  placeMarkerTeam(pos, country);
+  //b.5
+  var pos = {
+    lat: 49.267132 + parseFloat((Math.random() / 100).toFixed(4)),
+    lng: -122.968941 + parseFloat((Math.random() / 100).toFixed(4))
+  };
+  var country = "Brazil";
+  placeMarkerTeam(pos, country);
 }
+/*************************************************************/
+/*************************************************************/
+/**********************Timeline Entry Option******************/
+/*************************************************************/
+/*************************************************************/
+function entryOptions() {
+  //Delete the timeline Entry
+
+}
+
+/*************************************************************/
+/**********************Find Max Count*************************/
+/***************************Reference:************************/
+// https://stackoverflow.com/questions/28882590/return-the-name-of-variable-with-highest-value
+
+function findMax(obj) {
+  var keys = Object.keys(obj);
+  var max = keys[0];
+  for (var i = 1, n = keys.length; i < n; ++i) {
+    var k = keys[i];
+    if (obj[k] > obj[max]) {
+      max = k;
+    }
+  }
+  return max;
+}
+
+/*************************************************************/
+/*************************************************************/
+/*******************For future references ********************/
+/*************************************************************/
+/*************************************************************/
+// beachMarker.addListener('click', toggleBounce);
+// function toggleBounce() {
+//   if (beachMarker.getAnimation() !== null) {
+//     beachMarker.setAnimation(null);
+//   } else {
+//     beachMarker.setAnimation(google.maps.Animation.BOUNCE);
+//   }
+//  
+// }
+//Overlay Circle 
+// var antennasCircle = new google.maps.Circle({
+//   strokeColor: "#FF0000",
+//   strokeOpacity: 0.8,
+//   strokeWeight: 2,
+//   fillColor: "#FF0000",
+//   fillOpacity: 0.35,
+//   map: map,
+//   center: pos,
+//   radius: 100,
+// });
+// map.fitBounds(antennasCircle.getBounds());
+// var map;
+// function initMap() {
+//   console.log("Trying to display map");  
+//   map = new google.maps.Map(document.getElementById('map'), {
+//     center: {lat: 49.246292, lng: -123.116226},
+//     zoom: 6,
+//     mapTypeId: 'hybrid'
+//   });
+// }
