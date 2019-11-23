@@ -732,7 +732,7 @@ findPlaces = () => {
     console.log(pos.lat);
     //Get all places within 200 meters
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    const url =`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${pos.lat},${pos.lng}&radius=200&key=AIzaSyBww8lCSkoGuGOOv3If6_5X4mugRASw-dU`
+    const url =`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${pos.lat},${pos.lng}&radius=200&key=`
     fetch(proxyurl + url)
     .then(
       function(response) {
@@ -745,31 +745,28 @@ findPlaces = () => {
         // Examine the text in the response
         response.json().then(function(data) {
           var getDropDown = document.getElementById('dropdown-places');
-          // var dropdownlenght = getDropDown.options.length;
-          // for(let i=1; i<=dropdownlenght;i++){
-          //   getDropDown.options[i]=null;
-          //   console.log(getDropDown.options);
-          // }
           getDropDown.options.length = 1;
           var checkInButton = document.getElementsByClassName('checkinIcon');
           //If there is no places within 200 meters  change button color.
           if(data.status === "ZERO_RESULTS"){
-            console.log("ZZZ!!");
-            console.log(checkInButton);
+
             checkInButton[0].src = "images/checkinIcon-disable.svg";
             checkInButton[0].onclick = function(){myApp.alert("There is no place which is nearby", 'Error!');};
+
           }
           else{
+
             checkInButton[0].src = "images/checkin.svg";
             checkInButton[0].onclick =function(){whatsOnMind()};
-            console.log(getDropDown);
+
             for(let i=0; i<data.results.length;i++){
-               console.log(data.results[i].name);
+
+              // console.log(data.results[i].name);
               var option = document.createElement("OPTION");
-               option.text = data.results[i].name;
+              option.text = data.results[i].name;
               getDropDown.appendChild(option);
             }
-            console.log(getDropDown.options.length);
+
             console.log(data);
           }
         });
@@ -789,6 +786,6 @@ function errorHandler(err) {
   }
 }
 
-locationTracking = () => {
-  navigator.geolocation.watchPosition(findPlaces,errorHandler);
-}
+// locationTracking = () => {
+//   navigator.geolocation.watchPosition(findPlaces,errorHandler);
+// }

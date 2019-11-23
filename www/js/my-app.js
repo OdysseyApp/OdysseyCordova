@@ -44,8 +44,8 @@ $$(document).on('pageInit', function (e) {
     if (page.name === 'userDashbaord') {
         console.log("User Dashboard Page");
         console.log(mainView);
-
-        locationTracking();
+        //This function checks user location when the DashBoard screen is opened, and if the user location changes , it call findPlaces method.
+        navigator.geolocation.watchPosition(findPlaces,errorHandler);
         initMap();
         loadCurrentLocation();
         setTimeout(function () { initAllDemoOverlays(); }, 6000);
