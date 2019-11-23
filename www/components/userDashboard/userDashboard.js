@@ -215,6 +215,7 @@ whatsOnMind = () => {
     }
   }
 }
+
 /*************************************************************/
 /************************Switch view**************************/
 /*************************************************************/
@@ -320,7 +321,7 @@ geoCoder = (pos) => {
 
         //This is yout formatted address
         //alert(results[0].formatted_address);
-        // address = results[0].address_components.filter(ac => ~ac.types.indexOf('locality'))[0].long_name;
+         address = results[0].address_components.filter(ac => ~ac.types.indexOf('locality'))[0].long_name;
         address = results[0].address_components.filter(ac => ~ac.types.indexOf('administrative_area_level_2'))[0].long_name;
         address = address + ", " + results[0].address_components.filter(ac => ~ac.types.indexOf('administrative_area_level_1'))[0].long_name;
         address = address + ", " + results[0].address_components.filter(ac => ~ac.types.indexOf('country'))[0].long_name;
@@ -719,3 +720,75 @@ function findMax(obj) {
 //     mapTypeId: 'hybrid'
 //   });
 // }
+
+
+// Yalcin Tatar - Search Place Part ////
+findPlaces = () => {
+  navigator.geolocation.getCurrentPosition(function (ps) {
+    var pos = {
+      lat: ps.coords.latitude,
+      lng: ps.coords.longitude
+    };
+    console.log(pos.lat);
+    //Get all places within 200 meters
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    const url =`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${pos.lat},${pos.lng}&radius=200&key=AIzaSyBww8lCSkoGuGOOv3If6_5X4mugRASw-dU`
+    fetch(proxyurl + url)
+    .then(
+      function(response) {
+        if (response.status !== 200) {
+          console.log(response);
+          console.log('Looks like there was a problem. Status Code: ' +
+            response.status);
+          return;
+        }
+        // Examine the text in the response
+        response.json().then(function(data) {
+          var getDropDown = document.getElementById('dropdown-places');
+          // var dropdownlenght = getDropDown.options.length;
+          // for(let i=1; i<=dropdownlenght;i++){
+          //   getDropDown.options[i]=null;
+          //   console.log(getDropDown.options);
+          // }
+          getDropDown.options.length = 1;
+          var checkInButton = document.getElementsByClassName('checkinIcon');
+          //If there is no places within 200 meters  change button color.
+          if(data.status === "ZERO_RESULTS"){
+            console.log("ZZZ!!");
+            console.log(checkInButton);
+            checkInButton[0].src = "images/checkinIcon-disable.svg";
+            checkInButton[0].onclick = function(){myApp.alert("There is no place which is nearby", 'Error!');};
+          }
+          else{
+            checkInButton[0].src = "images/checkin.svg";
+            checkInButton[0].onclick =function(){whatsOnMind()};
+            console.log(getDropDown);
+            for(let i=0; i<data.results.length;i++){
+               console.log(data.results[i].name);
+              var option = document.createElement("OPTION");
+               option.text = data.results[i].name;
+              getDropDown.appendChild(option);
+            }
+            console.log(getDropDown.options.length);
+            console.log(data);
+          }
+        });
+      }
+    )
+    .catch(function(err) {
+      console.log('Fetch Error :-S', err);
+    });
+  });
+
+}
+function errorHandler(err) {
+  if(err.code == 1) {
+     alert("Error: Access is denied!");
+  } else if( err.code == 2) {
+     alert("Error: Position is unavailable!");
+  }
+}
+
+locationTracking = () => {
+  navigator.geolocation.watchPosition(findPlaces,errorHandler);
+}

@@ -44,11 +44,13 @@ $$(document).on('pageInit', function (e) {
     if (page.name === 'userDashbaord') {
         console.log("User Dashboard Page");
         console.log(mainView);
+
+        locationTracking();
         initMap();
         loadCurrentLocation();
-        setTimeout(function () { initAllDemoOverlays(); }, 3000);
-        setTimeout(function () { initAllDemoMarkers(); }, 3000);
-        setTimeout(function () { hideTeamThings(); }, 3000);
+        setTimeout(function () { initAllDemoOverlays(); }, 6000);
+        setTimeout(function () { initAllDemoMarkers(); }, 6000);
+        setTimeout(function () { hideTeamThings(); }, 6000);
 
     }
     if (page.name === 'team-splash') { 

@@ -34,7 +34,7 @@ signIn = (email,pw) => {
         });
 }
 
-function ValidateSignInSplash()
+function app()
 {
     var email = document.getElementById("loginName");
     var pw = document.getElementById("loginPassword");
