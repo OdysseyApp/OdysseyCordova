@@ -1,5 +1,11 @@
 signIn = (email,pw) => {
 
+    mainView.router.load({                   
+        url: "components/userDashboard/userDashboard.html",
+        ignoreChache: true,
+        reload: true                    
+    });
+
     let mail = email;
     let password = pw;
 
@@ -34,7 +40,7 @@ signIn = (email,pw) => {
         });
 }
 
-function ValidateSignInSplash()
+function app()
 {
     var email = document.getElementById("loginName");
     var pw = document.getElementById("loginPassword");

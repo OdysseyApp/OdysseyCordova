@@ -19,7 +19,17 @@
     "cordova-plugin-camera": {
       "ANDROID_SUPPORT_V4_VERSION": "27.+",
       "PACKAGE_NAME": "com.langara.odyssey"
+    },
+    "phonegap-plugin-image-capture": {
+      "PACKAGE_NAME": "com.langara.odyssey"
     }
   },
-  "dependent_plugins": {}
+  "dependent_plugins": {
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "com.langara.odyssey"
+    },
+    "phonegap-plugin-media-stream": {
+      "PACKAGE_NAME": "com.langara.odyssey"
+    }
+  }
 }

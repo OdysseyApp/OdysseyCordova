@@ -192,7 +192,10 @@ whatsOnMind = () => {
   document.getElementById("userThought").value = "";
   document.getElementById("mapBackground").classList.add("blurEffect");
   document.getElementById("mainTimeline").classList.add("blurEffect");
-
+  var imgTimeline = document.getElementById('imgTimeline');
+  imgTimeline.style.display = 'none';
+  document.getElementById('modal-content').style.height = '40vh';
+  document.getElementById('modal-content').style.margin = '-50% 0 0 7%' ;
   var modal = document.getElementById("myModal");
   modal.style.display = "contents";
 
@@ -215,6 +218,7 @@ whatsOnMind = () => {
     }
   }
 }
+
 /*************************************************************/
 /************************Switch view**************************/
 /*************************************************************/
@@ -300,7 +304,7 @@ checkInAtPlace = () => {
       lat: position.coords.latitude,
       lng: position.coords.longitude
     };
-    setTimeout(function () { updateAllOverlaysBatch(pos);}, 500);
+    setTimeout(function () { updateAllOverlaysBatch(pos); }, 500);
   });
 }
 
@@ -320,7 +324,7 @@ geoCoder = (pos) => {
 
         //This is yout formatted address
         //alert(results[0].formatted_address);
-        // address = results[0].address_components.filter(ac => ~ac.types.indexOf('locality'))[0].long_name;
+        address = results[0].address_components.filter(ac => ~ac.types.indexOf('locality'))[0].long_name;
         address = results[0].address_components.filter(ac => ~ac.types.indexOf('administrative_area_level_2'))[0].long_name;
         address = address + ", " + results[0].address_components.filter(ac => ~ac.types.indexOf('administrative_area_level_1'))[0].long_name;
         address = address + ", " + results[0].address_components.filter(ac => ~ac.types.indexOf('country'))[0].long_name;
@@ -481,7 +485,7 @@ updateAllOverlaysBatch = (pos) => {
     flagTeamOverlayArr.push(flagOverlay);
     // setTimeout(function () { hideTeamThings();}, 1000);
     // flagOverlay.setMap(null);
-    if(visbleTeamThings) {
+    if (visbleTeamThings) {
       flagOverlay.setMap(null);
     } else {
       flagOverlay.setMap(map);
@@ -534,7 +538,7 @@ showFlags = () => {
   app.wikitudePlugin = cordova.require("com.wikitude.phonegap.WikitudePlugin.WikitudePlugin");
   loadARchitectWorld();
   //app.loadARchitectWorld();
-} 
+}
 
 //Use the following path with PhoneGap. Remove it with the Cordova build.
 //cordova.file.dataDirectory + 'www/pgday/index.html'
@@ -542,10 +546,10 @@ loadARchitectWorld = () => {
   //console.log(cordova.file.dataDirectory);
   app.wikitudePlugin.isDeviceSupported(function () {
     app.wikitudePlugin.loadARchitectWorld(function successFn(loadedURL) {
-    }, function errorFn(error) { 
+    }, function errorFn(error) {
       console.log('Loading AR web view failed: ' + error);
     },
-    'www/pgday/index.html', ['2d_tracking'], { camera_position: 'back' }
+      cordova.file.dataDirectory + 'www/pgday/index.html', ['2d_tracking'], { camera_position: 'back' }
     );
   }, function (errorMessage) {
     console.log(errorMessage);
@@ -719,3 +723,96 @@ function findMax(obj) {
 //     mapTypeId: 'hybrid'
 //   });
 // }
+
+
+// Yalcin Tatar - Search Place Part ////
+findPlaces = () => {
+  navigator.geolocation.getCurrentPosition(function (ps) {
+    var pos = {
+      lat: ps.coords.latitude,
+      lng: ps.coords.longitude
+    };
+    console.log(pos.lat);
+    //Get all places within 2000 meters
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${pos.lat},${pos.lng}&radius=2000&key=`
+    fetch(proxyurl + url)
+      .then(
+        function (response) {
+          if (response.status !== 200) {
+            console.log(response);
+            console.log('Looks like there was a problem. Status Code: ' +
+              response.status);
+            return;
+          }
+          // Examine the text in the response
+          response.json().then(function (data) {
+            var getDropDown = document.getElementById('dropdown-places');
+            getDropDown.options.length = 1;
+            var checkInButton = document.getElementsByClassName('checkinIcon');
+            //If there is no places within 200 meters  change button color.
+            if (data.status === "ZERO_RESULTS") {
+
+              checkInButton[0].src = "images/checkinIcon-disable.svg";
+              checkInButton[0].onclick = function () { myApp.alert("There is no place which is nearby", 'Error!'); };
+
+            }
+            else {
+
+              checkInButton[0].src = "images/checkin.svg";
+              checkInButton[0].onclick = function () { whatsOnMind() };
+
+              for (let i = 0; i < data.results.length; i++) {
+
+                // console.log(data.results[i].name);
+                var option = document.createElement("OPTION");
+                option.text = data.results[i].name;
+                getDropDown.appendChild(option);
+              }
+
+              console.log(data);
+            }
+          });
+        }
+      )
+      .catch(function (err) {
+        console.log('Fetch Error :-S', err);
+      });
+  });
+
+}
+function errorHandler(err) {
+  if (err.code == 1) {
+    alert("Error: Access is denied!");
+  } else if (err.code == 2) {
+    alert("Error: Position is unavailable!");
+  }
+}
+
+// locationTracking = () => {
+//   navigator.geolocation.watchPosition(findPlaces,errorHandler);
+// }
+/*************************************************************/
+/*******************Take a picture******* ********************/
+/*************************************************************/
+// Reference
+// http://docs.phonegap.com/en/3.0.0/cordova_camera_camera.md.html
+
+takePicture = () => {
+  navigator.camera.getPicture(onSuccess, onFail, {
+    quality: 50,
+    destinationType: Camera.DestinationType.DATA_URL
+  });
+
+  function onSuccess(imageData) {
+    var imgTimeline = document.getElementById('imgTimeline');
+    imgTimeline.style.display = 'block';
+    document.getElementById('modal-content').style.height = '82vh';
+    document.getElementById('modal-content').style.margin = '-90% 0 0 7%' ;
+    imgTimeline.src = "data:image/jpeg;base64," + imageData;
+  }
+
+  function onFail(message) {
+    alert('Failed because: ' + message);
+  }
+}

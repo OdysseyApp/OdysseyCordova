@@ -1,5 +1,11 @@
 signIn = (email,pw) => {
 
+    mainView.router.load({                   
+        url: "components/userDashboard/userDashboard.html",
+        ignoreChache: true,
+        reload: true                    
+    });
+
     let mail = email;
     let password = pw;
 

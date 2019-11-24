@@ -51,7 +51,6 @@ $$(document).on('pageInit', function (e) {
         setTimeout(function () { initAllDemoOverlays(); }, 6000);
         setTimeout(function () { initAllDemoMarkers(); }, 6000);
         setTimeout(function () { hideTeamThings(); }, 6000);
-
     }
     if (page.name === 'team-splash') { 
         changeTeamFlag();
