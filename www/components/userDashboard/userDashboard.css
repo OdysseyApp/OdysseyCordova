@@ -22,7 +22,11 @@
   border-bottom-left-radius: 20%;
   border-bottom-right-radius: 20%;
 }
-
+#user-info{
+  position: absolute;
+  left: 30vw;
+  top: 2vh;
+}
 .logoWhite {
   height: 60px;
   width: 60px;
