@@ -44,15 +44,27 @@ $$(document).on('pageInit', function (e) {
     if (page.name === 'userDashbaord') {
         console.log("User Dashboard Page");
         console.log(mainView);
+        findPlaces();
         //This function checks user location when the DashBoard screen is opened, and if the user location changes , it call findPlaces method.
-        navigator.geolocation.watchPosition(findPlaces,errorHandler);
+        // navigator.geolocation.watchPosition(findPlaces,errorHandler);
         initMap();
+        showSignedInUserDataFromFB();
+        loadUserDataDB();
+        loadMarkersDataDB();
         loadCurrentLocation();
-        setTimeout(function () { initAllDemoOverlays(); }, 6000);
-        setTimeout(function () { initAllDemoMarkers(); }, 6000);
-        setTimeout(function () { hideTeamThings(); }, 6000);
+        setTimeout(function () { initAllDemoOverlays(); }, 5000);
+        setTimeout(function () { initAllDemoMarkers(); }, 5000);
+        setTimeout(function () { hideTeamThings(); }, 5000);
+        var pos;
+        navigator.geolocation.getCurrentPosition(function (position) {
+            pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+        });
+        setTimeout(function () { updateAllOverlaysBatch(pos); }, 6000);
     }
-    if (page.name === 'team-splash') { 
+    if (page.name === 'team-splash') {
         changeTeamFlag();
     }
 })

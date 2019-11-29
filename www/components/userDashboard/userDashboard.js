@@ -11,7 +11,7 @@ var countryFlagCount = {
   RussiaFlagsCount: 0
 }
 var imgSrc;
-
+var userCountry;
 /*************************************************************/
 var map, infoWindow;
 function initMap() {
@@ -326,9 +326,9 @@ geoCoder = (pos) => {
 
         //This is yout formatted address
         //alert(results[0].formatted_address);
-        address = results[0].address_components.filter(ac => ~ac.types.indexOf('locality'))[0].long_name;
-        address = results[0].address_components.filter(ac => ~ac.types.indexOf('administrative_area_level_2'))[0].long_name;
-        address = address + ", " + results[0].address_components.filter(ac => ~ac.types.indexOf('administrative_area_level_1'))[0].long_name;
+        //address = results[0].address_components.filter(ac => ~ac.types.indexOf('locality'))[0].long_name;
+        //address = results[0].address_components.filter(ac => ~ac.types.indexOf('administrative_area_level_2'))[0].long_name;
+        address = results[0].address_components.filter(ac => ~ac.types.indexOf('administrative_area_level_1'))[0].long_name;
         address = address + ", " + results[0].address_components.filter(ac => ~ac.types.indexOf('country'))[0].long_name;
       } else {
         //return "Location not available";
@@ -344,6 +344,7 @@ geoCoder = (pos) => {
 /**********************Place Marker***************************/
 /*************************************************************/
 placeMarker = (pos, country) => {
+  console.log("placeMarker Country" + country);
   var img = "";
   if (country === "India") {
     img = 'pinIndia';
@@ -451,7 +452,7 @@ createOverlay = (pos, country) => {
 /*************************************************************/
 
 updateAllOverlaysBatch = (pos) => {
-  console.log(countryFlagCount.IndiaFlagsCount);
+  console.log("Batch fired=>" + countryFlagCount.IndiaFlagsCount);
   if (countryFlagCount.IndiaFlagsCount > countryFlagCount.TurkeyFlagsCount) {
     // if (findMax(countryFlagCount) === "TurkeyFlagsCount") {
     //   var country = "Turkey";
@@ -514,6 +515,10 @@ addTimelineEntry = (userThought) => {
   document.getElementById("contentContainerDiv").appendChild(contentDiv);
 
   var h3 = document.createElement("H3")
+  var currentPlace = document.getElementById("dropdown-places").options[document.getElementById("dropdown-places").selectedIndex].value;
+  if (currentPlace === "Select a Place")
+    currentPlace = "Vancouver";
+  address = currentPlace + ", " + address;
   var text = document.createTextNode(address);
   h3.appendChild(text);
   document.getElementById("contentDiv").appendChild(h3);
@@ -534,10 +539,140 @@ addTimelineEntry = (userThought) => {
     imge.id = String(imgSrc).substring(imgSrc.length - 5, imgSrc.length);
     imge.className = "dynamicImgTimeline";
     imge.src = "data:image/jpeg;base64," + imgSrc;
-    imge.onclick = function( ){ enlargeImage(String(imgSrc).substring(imgSrc.length - 5, imgSrc.length)); };
+    // imge.onclick = function( ){ enlargeImage(this.id); };
+    document.getElementById("contentDiv").appendChild(imge);
+  }
+
+  addTimelineEntryDB(currentPositionConst, address, datetime, userThought, imgSrc);
+}
+/*************************************************************/
+/********************Add timeline Entry to DB*****************/
+/*************************************************************/
+addTimelineEntryDB = (currentPositionConst, address, datetime, userThought, imgSrc) => {
+  var db = firebase.firestore();
+  db.collection('checkins').add({
+    positionLng: currentPositionConst.lng,
+    positionLat: currentPositionConst.lat,
+    address: address,
+    datetime: datetime,
+    userThought: userThought,
+    imgSrc: imgSrc,
+    userEmail: window.localStorage.getItem("email")
+  }).then(function () {
+    console.log("Document successfully written!");
+
+  }).catch(function (error) {
+    console.log("Error writing document: ", error);
+  });
+}
+
+/*************************************************************/
+/********************Load userData from DB********************/
+/*************************************************************/
+loadUserDataDB = () => {
+  //Get the user country
+  console.log("Current User =>" + window.localStorage.getItem("email"));
+  db.collection("checkins").where("userEmail", "==", window.localStorage.getItem("email")).orderBy("datetime", "asc")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        // doc.data() is never undefined for query doc snapshots
+        //console.log(doc.id, " => ", doc.data());
+        //load the timeline
+        loadTimelineDb(doc.data());
+      });
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
+    });
+}
+
+/*************************************************************/
+/**************************Load timeline from DB**************/
+/*************************************************************/
+loadTimelineDb = (data) => {
+  // Appending the div to timeline
+  var contentContainerDiv = document.createElement('div');
+  contentContainerDiv.className = 'container right';
+  contentContainerDiv.id = "contentContainerDiv";
+
+  var timeline = document.getElementById("mainTimeline");
+  timeline.insertBefore(contentContainerDiv, timeline.childNodes[0]);
+
+  var contentDiv = document.createElement('div');
+  contentDiv.className = 'content';
+  contentDiv.id = 'contentDiv';
+  document.getElementById("contentContainerDiv").appendChild(contentDiv);
+
+  var h3 = document.createElement("H3")
+  var text = document.createTextNode(data.address);
+  h3.appendChild(text);
+  document.getElementById("contentDiv").appendChild(h3);
+
+  var h4 = document.createElement("H4");
+  var text = document.createTextNode(data.datetime);
+  h4.appendChild(text);
+  document.getElementById("contentDiv").appendChild(h4);
+
+  var p = document.createElement("P");
+  var text = document.createTextNode(data.userThought);
+  p.appendChild(text);
+  document.getElementById("contentDiv").appendChild(p);
+
+  if (!(data.imgSrc === "")) {
+    var imge = document.createElement("img");
+    imge.id = String(data.imgSrc).substring(data.imgSrc.length - 5, data.imgSrc.length);
+    imge.className = "dynamicImgTimeline";
+    imge.src = "data:image/jpeg;base64," + data.imgSrc;
+    // imge.onclick = function( ){ enlargeImage(this.id); };
     document.getElementById("contentDiv").appendChild(imge);
   }
 }
+
+/*************************************************************/
+/***********************Load Marker data from DB**************/
+/*************************************************************/
+loadMarkersDataDB = () => {
+
+  //Get the user country
+  db.collection("users").where("userEmail", "==", window.localStorage.getItem("email"))
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+        userCountry = doc.data().country;
+        console.log("User Country =>" + userCountry);
+
+      });
+      //Get the locations.
+      db.collection("checkins").where("userEmail", "==", window.localStorage.getItem("email")).orderBy("datetime", "asc")
+        .get()
+        .then(function (querySnapshot) {
+          querySnapshot.forEach(function (doc) {
+            // doc.data() is never undefined for query doc snapshots
+            console.log("<===========Loading markers========>");
+            var posMarkerDB = {
+              lat: doc.data().positionLat,
+              lng: doc.data().positionLng
+            };
+            //console.log(doc.id, " => ", posMarkerDB.lat);
+            countryFlagCount.IndiaFlagsCount++;
+            placeMarker(posMarkerDB, userCountry);
+          });
+        })
+        .catch(function (error) {
+          console.log("Error getting documents: ", error);
+        });
+
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
+    });
+
+
+}
+
 
 /*************************************************************/
 /*************************************************************/
@@ -559,7 +694,7 @@ loadARchitectWorld = () => {
     }, function errorFn(error) {
       console.log('Loading AR web view failed: ' + error);
     },
-      cordova.file.dataDirectory + 'www/pgday/index.html', ['2d_tracking'], { camera_position: 'back' }
+      'www/pgday/index.html', ['2d_tracking'], { camera_position: 'back' }
     );
   }, function (errorMessage) {
     console.log(errorMessage);
@@ -745,7 +880,7 @@ findPlaces = () => {
     console.log(pos.lat);
     //Get all places within 2000 meters
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${pos.lat},${pos.lng}&radius=2000&key=ADDYOURKEY`
+    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${pos.lat},${pos.lng}&radius=100&key=`
     fetch(proxyurl + url)
       .then(
         function (response) {
@@ -799,32 +934,33 @@ function errorHandler(err) {
   }
 }
 //Yalcin Tatar - Show Signed In User Data 
-function showSignedInUserDataFromFB(){
-  firebase.auth().onAuthStateChanged(function(user) {
+//We will use thin in the profile page
+function showSignedInUserDataFromFB() {
+  firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-       var userInfodiv = document.getElementById("user-info");
-       var signoutButton = document.createElement("BUTTON");
-       signoutButton.setAttribute("class","signoutBtn");
-       signoutButton.innerHTML = "Sign Out";
-       var signoutB = document.getElementsByClassName("signoutBtn");
-       var usernameDiv = document.createElement("span");
-       usernameDiv.innerHTML = "Welcome "+user.email;
-       userInfodiv.appendChild(usernameDiv);
-       userInfodiv.appendChild(signoutButton);
-       signoutB[0].onclick = function (){
-         firebase.auth().signOut().then(function() {
-          myApp.alert("You Succesfully Log Out!", 'Success!',function (){
-            mainView.router.load({                   
-              url: "components/signInDashBoard/signInDashBoard.html",
-              ignoreCache: true,
-              reload: true ,
-          }); 
-          });
-        }).catch(function(error) {
-          myApp.alert(error, 'Error!');
-        });}
+      var userInfodiv = document.getElementById("user-info");
+      var signoutButton = document.createElement("BUTTON");
+      signoutButton.setAttribute("class", "signoutBtn");
+      signoutButton.innerHTML = "Sign Out";
+      var signoutB = document.getElementsByClassName("signoutBtn");
+      var usernameDiv = document.createElement("span");
+      //  usernameDiv.innerHTML = "Welcome "+user.email;
+      //  userInfodiv.appendChild(usernameDiv);
+      //  userInfodiv.appendChild(signoutButton);
+      //  signoutB[0].onclick = function (){
+      //    firebase.auth().signOut().then(function() {
+      //     myApp.alert("You Succesfully Log Out!", 'Success!',function (){
+      //       mainView.router.load({                   
+      //         url: "components/signInDashBoard/signInDashBoard.html",
+      //         ignoreCache: true,
+      //         reload: true ,
+      //     }); 
+      //     });
+      //   }).catch(function(error) {
+      //     myApp.alert(error, 'Error!');
+      //   });}
     } else {
-     console.log("User Succesfully-Signed out");
+      console.log("User Succesfully-Signed out");
     }
   });
 }
@@ -840,7 +976,7 @@ function showSignedInUserDataFromFB(){
 
 takePicture = () => {
   navigator.camera.getPicture(onSuccess, onFail, {
-    quality: 50,
+    quality: 20,
     destinationType: Camera.DestinationType.DATA_URL
   });
 
@@ -862,31 +998,31 @@ takePicture = () => {
 /*************************************************************/
 
 enlargeImage = (id) => {
-  document.getElementById("mapBackground").classList.add("blurEffect");
-  document.getElementById("mainTimeline").classList.add("blurEffect");
-  
-  document.getElementById('modal-content-pic').style.height = '60vh';
-  document.getElementById('modal-content-pic').style.margin = '0 0 0 7%';
-  var modal = document.getElementById("myModal-pic");
-  modal.style.display = "contents";
+  //document.getElementsByClassName('page-content')[0].classList.toggle('blurImgBack');
+  document.getElementById(id).classList.toggle('enlargeImg');
 
-  // Get the <span> element that closes the modal
-  var span = document.getElementsByClassName("close-pic")[0];
+  // document.getElementById('modal-content-pic').style.height = '60vh';
+  // document.getElementById('modal-content-pic').style.margin = '0 0 0 7%';
+  // var modal = document.getElementById("myModal-pic");
+  // modal.style.display = "contents";
 
-  // When the user clicks on <span> (x), close the modal
-  span.onclick = function () {
-    modal.style.display = "none";
-    document.getElementById("mapBackground").classList.remove("blurEffect");
-    document.getElementById("mainTimeline").classList.remove("blurEffect");
-  }
+  // // Get the <span> element that closes the modal
+  // var span = document.getElementsByClassName("close-pic")[0];
 
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function (event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-      document.getElementById("mapBackground").classList.remove("blurEffect");
-      document.getElementById("mainTimeline").classList.remove("blurEffect");
-    }
-  }
-  
-}
+  // // When the user clicks on <span> (x), close the modal
+  // span.onclick = function () {
+  //   modal.style.display = "none";
+  //   document.getElementById("mapBackground").classList.remove("blurEffect");
+  //   document.getElementById("mainTimeline").classList.remove("blurEffect");
+  // }
+
+  // // When the user clicks anywhere outside of the modal, close it
+  // window.onclick = function (event) {
+  //   if (event.target == modal) {
+  //     modal.style.display = "none";
+  //     document.getElementById("mapBackground").classList.remove("blurEffect");
+  //     document.getElementById("mainTimeline").classList.remove("blurEffect");
+  //   }
+  // }
+
+} 

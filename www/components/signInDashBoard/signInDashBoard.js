@@ -122,6 +122,8 @@ function ValidateSignInSplashwithFireBase(email,password) {
       });
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
+            var storage = window.localStorage;
+            storage.setItem("email", email);
             mainView.router.load({                   
                 url: "components/userDashboard/userDashboard.html",
                 ignoreCache: true,
