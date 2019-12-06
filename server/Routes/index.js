@@ -77,11 +77,11 @@ router.get("/flags/all", async (req, res) => {
     db.connection.query("select * from flags", (err, data) => {
       if (err) return re.error(res);
       else {
-        let responseData = {
-          status: 1,
-          message: "Flags List",
-          data: data
-        };
+        // let responseData = {
+        //   status: 1,
+        //   message: "Flags List",
+        //   data: data
+        // };
 
         return re.response(data, res);
       }
