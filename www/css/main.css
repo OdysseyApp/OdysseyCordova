@@ -54,7 +54,7 @@
     margin-left: auto;
     margin-right: auto;
     height: auto;
-    
+    padding-left: 0;
 }
 #signup-link{
     color: #5282ab;
@@ -75,17 +75,18 @@
     top: 16vh;
     position: relative;
 }
+/**********************************************************/
+/******************Form Control****************************/
+/**********************************************************/
 
-/* .list ul li:nth-child(3)> button{
-    background-color: antiquewhite;
-} */
-/* .list ul li:nth-child(1){
-    width: 40vh;
-    margin-left: auto;
-    margin-right: auto;
-} */
+#userEmail{
+    
+}
+/**********************************************************/
+/******************Form Control****************************/
+/**********************************************************/
 .divider-loginbutton{
-    margin-top: 7vh;
+    margin-top: 4vh;
     width: 60%;
     margin-left: auto;
     margin-right: auto;
@@ -118,7 +119,7 @@ input[type=text] , input[type=password] ,input[type=email] {
     border-radius: 20px;
     box-sizing: border-box;
     box-shadow: -1px 1px 7px -1px #697a6e;
-    background: url(../../images/worldwide.png) no-repeat scroll 8px 8px; 
+    background: url(../../images/world.png) no-repeat scroll 8px 8px; 
     padding-left: 30px;
     background-position: 3.2vw;
     padding: 12px 40px;
@@ -273,6 +274,44 @@ input[type=text] , input[type=password] ,input[type=email] {
 /**********************************************************/
 /**********************************************************/
 /**********************************************************/
+
+
+#score-background-second{
+    border-radius: 20%;
+    background: rgb(249,210,112);
+    background: linear-gradient(90deg, rgba(249,210,112,1) 25%, rgba(244,216,147,1) 100%);
+    color: white;
+}
+#score-background-third{
+    border-radius: 20%;
+    background: rgb(228,120,97);
+    background: linear-gradient(90deg, rgba(228,120,97,1) 25%, rgba(237,160,143,1) 100%);
+    color: white;
+}
+#score-background-first{
+    border-radius: 20%;
+    background: rgb(126,196,185);
+    background: linear-gradient(90deg, rgba(126,196,185,1) 25%, rgba(168,224,215,1) 100%);
+    color: white;
+
+}
+.score-background-others{
+    border-radius: 20%;
+    background: rgb(119,119,119);
+    background: linear-gradient(90deg, rgba(119,119,119,1) 25%, rgba(191,190,190,1) 100%);
+    color: white;
+
+}
+.lead-users{
+    width: 100%;
+    background: rgb(224,224,224);
+    height: 7vh;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    border-radius: 5px;
+    color: gray;
+    box-shadow: -1px 1px 7px -1px #697a6e;
+}
 #grid-container-leaderboard{
     display: grid;
     
@@ -331,9 +370,19 @@ input[type=text] , input[type=password] ,input[type=email] {
 .winner-teams{
     padding: 5px;
 }
-.table-flag-icon{
-    width: 10%;
-    padding-right: 5vw;
+.lead-item1{
+    width: 10vw;
+    padding: 5px;
+}
+.lead-item2{
+    text-align: center;
+    padding-top: 10px;
+    padding-right: 30px;
+}
+.lead-item3{
+    text-align: center;
+    padding-top: 10px;
+    padding-right: 10px;
 }
 #leader-head{
     margin-left: auto;
@@ -347,10 +396,12 @@ input[type=text] , input[type=password] ,input[type=email] {
 }
 .leader-board li{
     font-size: 1.5em;
+    width: 100%;
     display: inline-flex;
     list-style-type: none;
     font-family: sans-serif;
     color: #646565;
+    padding-top: 4vh;
 }
 .user-score{
     position: absolute;
@@ -494,7 +545,7 @@ hr {
   
     100% {
         visibility: visible;
-        transform: translateY(100px) ;
+        transform: translateY(160px) ;
         
     }
 }
@@ -785,15 +836,15 @@ hr {
     animation: slide-in-teamflag 1s 6s forwards;  
     
 }
-.assign-flag{
+#assign-flag{
     
     animation: bounce-in-top 1.5s both,flip-vertical-right 0.8s  6.5s  cubic-bezier(0.455, 0.030, 0.515, 0.955) ;
+    width: 100%;
 }
 .team-info{
     font-size: 2em;
     animation: slide-in-right 0.5s 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
-
 
 @keyframes bounce-in-top {
     0% {

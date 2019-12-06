@@ -7,10 +7,10 @@ var $$ = Dom7;
 
 $$('.popup-about').on('popup:open', function (e) {
     console.log('About popup open');
-  });
-  $$('.popup-about').on('popup:opened', function (e) {
+});
+$$('.popup-about').on('popup:opened', function (e) {
     console.log('About popup opened');
-  });
+});
 
 // Add view
 var mainView = app.addView('.view-main', {
@@ -19,7 +19,7 @@ var mainView = app.addView('.view-main', {
 });
 
 // Handle Cordova Device Ready Event
-$$(document).on('deviceready', function() {
+$$(document).on('deviceready', function () {
     console.log("Device is ready!");
 });
 
@@ -36,7 +36,6 @@ app.onPageInit('about', function (page) {
 $$(document).on('pageInit', function (e) {
     // Get page data from event data
     var page = e.detail.page;
-   
     if (page.name === 'about') {
         // Following code will be executed for page with data-page attribute equal to "about"
         myApp.alert('Here comes About page');
@@ -45,12 +44,28 @@ $$(document).on('pageInit', function (e) {
     if (page.name === 'userDashbaord') {
         console.log("User Dashboard Page");
         console.log(mainView);
+        findPlaces();
+        //This function checks user location when the DashBoard screen is opened, and if the user location changes , it call findPlaces method.
+        // navigator.geolocation.watchPosition(findPlaces,errorHandler);
         initMap();
-        initAllDemoOverlays();
-        initAllDemoMarkers();
+        showSignedInUserDataFromFB();
+        loadUserDataDB();
+        loadMarkersDataDB();
+        loadCurrentLocation();
+        setTimeout(function () { initAllDemoOverlays(); }, 5000);
+        setTimeout(function () { initAllDemoMarkers(); }, 5000);
+        setTimeout(function () { hideTeamThings(); }, 5000);
+        var pos;
+        navigator.geolocation.getCurrentPosition(function (position) {
+            pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+        });
+        setTimeout(function () { updateAllOverlaysBatch(pos); }, 6000);
     }
     if (page.name === 'team-splash') {
-        confettiAnimation();    
+        changeTeamFlag();
     }
 })
 

@@ -53,12 +53,29 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "CameraPopoverHandle"
       ]
+    },
+    {
+      "id": "es6-promise-plugin.Promise",
+      "file": "plugins/es6-promise-plugin/www/promise.js",
+      "pluginId": "es6-promise-plugin",
+      "runs": true
+    },
+    {
+      "id": "phonegap-plugin-media-stream.MediaDevices",
+      "file": "plugins/phonegap-plugin-media-stream/www/android/MediaDevices.js",
+      "pluginId": "phonegap-plugin-media-stream",
+      "clobbers": [
+        "navigator.mediaDevices"
+      ]
     }
   ];
   module.exports.metadata = {
     "cordova-plugin-whitelist": "1.3.4",
     "com.wikitude.phonegap.WikitudePlugin": "8.9.1",
     "cordova-plugin-geolocation": "4.0.2",
-    "cordova-plugin-camera": "4.1.0"
+    "cordova-plugin-camera": "4.1.0",
+    "es6-promise-plugin": "4.2.2",
+    "phonegap-plugin-media-stream": "1.2.1",
+    "phonegap-plugin-image-capture": "1.1.2"
   };
 });

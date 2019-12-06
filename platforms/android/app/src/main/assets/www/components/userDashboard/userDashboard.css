@@ -1,6 +1,5 @@
 /* Always set the map height explicitly to define the size of the div
  * element that contains the map. */
-
 #map {
   background-color: cornsilk;
   width: 94%;
@@ -11,6 +10,7 @@
   clear: both;
   transition: all .5s linear;
 }
+
 .mapHt {
   height: 350px;
 }
@@ -19,9 +19,14 @@
   height: 220px;
   background-color: #0db645;
   margin-bottom: 250px;
-  border-radius: 0 0 13px 13px;
+  border-bottom-left-radius: 20%;
+  border-bottom-right-radius: 20%;
 }
-
+#user-info{
+  position: absolute;
+  left: 30vw;
+  top: 2vh;
+}
 .logoWhite {
   height: 60px;
   width: 60px;
@@ -41,20 +46,20 @@
 .profileIcon {
   height: 40px;
   width: 40px;
-  animation: addNavProfileIcons 1s;
+  /* animation: addNavProfileIcons 1s; */
 }
 
 .checkinIcon {
-  height: 43px;
-  width: 40px;
-  animation: addNavCheckinIcons 2s;
+  height: 62px;
+  width: 54px;
+  animation: addNavCheckinIcons 3s;
 }
 
 .gameIcon {
   height: 40px;
-  width: 30px;
-  margin-top: 8px;
-  animation: addNavGameIcons 3s;
+  width: 40px;
+  margin-top: 5px;
+  /* animation: addNavGameIcons 3s; */
 }
 
 @keyframes addNavProfileIcons {
@@ -85,11 +90,13 @@
   }
   85% {
     opacity: 0.75;
-    transform: translateY(-30px);
+    /* transform: translateY(-30px); */
+    transform:rotate(180deg);
   }
   100% {
     opacity: 1;
     transform: translateY(0);
+    transform: rotate(360deg);
   }
 }
 
@@ -318,7 +325,7 @@ html, body {
 
 /* Modal Content */
 
-.modal-content {
+#modal-content {
   background-color: #fefefe;
   margin: auto;
   padding: 20px;
@@ -361,8 +368,17 @@ html, body {
   border: 1px solid #ccc;
   border-radius: 6px;
   box-sizing: border-box;
-  height: 50%;
+  height: 28%;
 }
+
+#dropdown-places{
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
 
 .popUpSubmit {
   width: 100%;
@@ -400,7 +416,7 @@ html, body {
 }
 
 .switchViewBtnDown {
-  transform: translateY(340px) translateX(-120px);
+  transform: translateY(340px) translateX(-120px) rotate(360deg);
 }
 
 .arViewBtn {
@@ -417,3 +433,81 @@ html, body {
   visibility: visible;
   transform: translateY(330px) translateX(120px);
 } 
+
+/* ToolBar CSS */
+.toolbar-style{
+  background-color: #0db645 ; 
+}
+
+.check-in{
+  background-color: #0db645 ;
+  height: 12vh;
+  width: 17vw;
+  text-align: center;
+  border-radius: 50%;
+  z-index: 16;
+}
+
+#imgTimeline {
+  display:none;
+  width:100%;
+  margin: auto;
+  height:300px;
+}
+
+.takePicture {
+  height: 50px;
+  width: 50px;
+  margin-top: 10px;
+}
+
+.dynamicImgTimeline {
+  width:100%;
+  margin: auto;
+  height:300px;
+}
+
+/************************************************************************/
+/********************************Modal picture***************************/
+/************************************************************************/
+.modal-pic {
+  display: none;
+}
+
+/* Modal Content */
+
+#modal-content-pic {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  position: absolute;
+  z-index: 5;
+  margin-top: -50%;
+  margin-left: 7%;
+  height: 40vh;
+  box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 16px 20px 0 rgba(0, 0, 0, 0.19);
+  animation-timing-function: ease-in-out;
+}
+
+/************************************************************************/
+/********************************Enlarge picture*************************/
+/************************************************************************/
+.enlargeImg {
+  width:125%;
+  margin: auto;
+  height:450px;
+  margin-left: -12%;
+}
+.blurImgBack {
+  filter: blur(5px) grayscale(40%);
+  height: 100vh;
+  width: 100%;
+  height: 100vh;
+  z-index: 30;
+  position: relative;
+}
+#blurBackForImg {
+  height: 100vh;
+}

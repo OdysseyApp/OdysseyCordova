@@ -18,6 +18,7 @@
 
             <div id="mapBackground">
                 <img src="images/logoWhite.png" alt="logo" class="logoWhite">
+                <div id="user-info"></div>
                 <img src="images/notificationIcon.png" alt="notification" class="notificationIcon">
                 <div id="map" class="mapHt"></div>
             </div>
@@ -25,16 +26,28 @@
             <!-- The Modal -->
             <div id="myModal" class="modal">
                 <!-- Modal content -->
-                <div class="modal-content">
+                <div id="modal-content">
                     <span class="close">&times;</span>
                     <p style="font-weight: bold;">What is on your mind?</p>
-                    
-                    <textarea id="userThought" class="popUpInput" maxlength="250" placeholder="What is on your mind? (max: 250 words)"></textarea>
-                    
+                    <img id="imgTimeline" src="" />
+                    <textarea id="userThought" class="popUpInput" maxlength="250"
+                        placeholder="What is on your mind? (max: 250 words)"></textarea>
+                    <select id="dropdown-places">
+                        <option disabled selected>Select a Place</option>
+                    </select>
+                    <img src="images/camera.png" alt="takePicture" class="right takePicture" onclick="takePicture()" >
                     <input type="submit" class="popUpSubmit" value="Submit" onclick="checkInAtPlace()">
                 </div>
             </div>
 
+
+            <!-- The Picture Modal -->
+            <div id="myModal-pic" class="modal-pic">
+                <!-- Modal content -->
+                <div id="modal-content-pic">
+                    <span class="close-pic">&times;</span>
+                </div>
+            </div>
             <!---------------------------------------------------------------------->
             <!-------------------------Switch View---------------------------------->
             <!---------------------------------------------------------------------->
@@ -48,7 +61,6 @@
             <!-- Timeline ---------------------------------------------------------->
             <!-- Reference https://www.w3schools.com/howto/howto_css_timeline.asp -->
             <!---------------------------------------------------------- Timeline -->
-
             <div class="timeline" id="mainTimeline">
                 <div class="container right">
                     <div class="content" onclick="entryOptions()">
@@ -64,12 +76,16 @@
 
         </div>
         <!-- Bottom Toolbar-->
-        <div class="toolbar">
+        <div class="toolbar toolbar-style">
             <div class="toolbar-inner">
-                <img src="images/iconUser.png" alt="profile" class="profileIcon">
-                <img src="images/iconLocation.png" alt="checkin" class="checkinIcon" onclick="whatsOnMind()">
+                <img src="images/user.svg" alt="profile" class="profileIcon">
+                <div class="check-in">
+                    <img src="images/checkin.svg" alt="checkin" class="checkinIcon" onclick="whatsOnMind()">
+                </div>
+
                 <!-- <img src="images/iconFlag.png" alt="game" class="gameIcon"> -->
-                <a href="components/leaderBoard/leaderBoard.html"><img src="images/iconFlag.png" alt="game" class="gameIcon"></a>
+                <a href="components/leaderBoard/leaderBoard.html"><img src="images/medal.png" alt="game"
+                        class="gameIcon"></a>
 
             </div>
         </div>
@@ -86,4 +102,4 @@
             </div>
         </div> -->
     </div>
-</div> 
+</div>

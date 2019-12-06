@@ -2,12 +2,12 @@
     Information about server communication. This sample webservice is provided by Wikitude and returns random dummy
     places near given location.
     https://example.wikitude.com/GetSamplePois/
-    http://10.128.238.138:8081/flags/
+    http://10.128.222.210:8081/flags/
     http://192.168.0.10:8081/flags/"
  */
 var ServerInformation = {
 
-    POIDATA_SERVER: "https://example.wikitude.com/GetSamplePois/",
+    POIDATA_SERVER: "http://10.128.222.210:8081/flags/",
     POIDATA_SERVER_ARG_LAT: "lat",
     POIDATA_SERVER_ARG_LON: "lon",
     POIDATA_SERVER_ARG_NR_POIS: "nrPois"
@@ -62,18 +62,38 @@ var World = {
                 "title": poiData[currentPlaceNr].name,
                 "description": poiData[currentPlaceNr].description
             };
-            if(singlePoi.title==="Red") {
-                World.markerDrawableIdle = new AR.ImageResource("assets/redFlag.png", {
+            if(singlePoi.title==="Arsh") {
+                World.markerDrawableIdle = new AR.ImageResource("assets/pinIndia.png", {
                     onError: World.onError
                 });
-            } else if(singlePoi.title==="Black") { 
-                World.markerDrawableIdle = new AR.ImageResource("assets/blackFlag.png", {
+            } else if(singlePoi.title==="Yalcin") { 
+                World.markerDrawableIdle = new AR.ImageResource("assets/pinTurkey.png", {
                     onError: World.onError
                 });
-            } else if(singlePoi.title==="Blue") {
-                World.markerDrawableIdle = new AR.ImageResource("assets/blueFlag.png", {
+            } else if(singlePoi.title==="Alex") {
+                World.markerDrawableIdle = new AR.ImageResource("assets/pinRussia.png", {
                     onError: World.onError
                 });
+            } else if(singlePoi.title==="Nazi") {
+                World.markerDrawableIdle = new AR.ImageResource("assets/pinIran.png", {
+                    onError: World.onError
+                });
+            } else if(singlePoi.title==="Harry") {
+                World.markerDrawableIdle = new AR.ImageResource("assets/pinVietnam.png", {
+                    onError: World.onError
+                });
+            } else if(singlePoi.title==="Eduardo") {
+                World.markerDrawableIdle = new AR.ImageResource("assets/pinBrazil.png", {
+                    onError: World.onError
+                });
+            } else if(singlePoi.title==="Sae Byeol") {
+                World.markerDrawableIdle = new AR.ImageResource("assets/pinSouthkorea.png", {
+                    onError: World.onError
+                });
+            } else if(singlePoi.title==="Starbuck") {
+                World.markerDrawableIdle = new AR.ImageResource("assets/starbucksLogo.png", {
+                    onError: World.onError
+                }); 
             }
             World.markerList.push(new Marker(singlePoi));
         }

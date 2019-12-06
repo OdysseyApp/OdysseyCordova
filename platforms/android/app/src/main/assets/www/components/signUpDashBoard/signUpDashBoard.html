@@ -1,82 +1,85 @@
 <div class="pages background-splash">
-    <div data-page="signUpDashBoard" class="page">
-        <div class="page-content">
-            <div class="content-block">
-            <div class="logo-box">
-                <img src="images/trees/cloud.png" alt="cloud" class="cloud-logo-left-signup">
-                <img src="images/trees/cloud.png" alt="cloud" class="cloud-logo-right-signup">
-                <div class="logo-container">
-                    <img src="images/Logo.png" alt="cloud" class="odyssey-logo-signup">
-                </div>
-                
-            </div>
-            <div class="list">
-              <label id="info"></label>
-              <ul id="ul-signup">
-                <li class="item-content item-input">
-                  <div class="item-inner">            
-                    <div class="item-input">
-                      <input id="userName" class="user-input" type="text" name="username" placeholder="Enter username">
-                    </div>
+  <div data-page="signUpDashBoard" class="page">
+      <div class="page-content">
+          <div class="content-block">
+              
+          <div class="logo-box">
+              <img src="images/trees/cloud.png" alt="cloud" class="cloud-logo-left-signup">
+              <img src="images/trees/cloud.png" alt="cloud" class="cloud-logo-right-signup">
+              <div class="logo-container">
+                  <img src="images/Logo.png" alt="cloud" class="odyssey-logo-signup">
+              </div>
+              
+          </div>
+          <div class="list">
+            <label id="info"></label>
+            <ul id="ul-signup">
+              <li class="item-content item-input">
+                <div class="item-inner">            
+                  <div class="item-input">
+                    <input id="userName" class="user-input" type="text" name="username" placeholder="Enter username">
                   </div>
-                </li>
-                <li class="item-content item-input">
-                    <div class="item-inner">
-                      <div class="item-input">
-                        <input id="userEmail" class="email-input" type="email" name="email" placeholder="Enter Email">
-                      </div>
-                    </div>
-                  </li>
-                <li class="item-content item-input">
+                </div>
+              </li>
+              <li class="item-content item-input">
                   <div class="item-inner">
                     <div class="item-input">
-                      <input id="userPassword" class="password-input" type="password" name="password" placeholder="Enter password">
+                      <input id="userEmail" class="email-input" type="email" name="email" placeholder="Enter Email">
+                    </div>
+                  </div>
+                </li>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-input">
+                    <input id="userPassword" class="password-input" type="password" name="password" placeholder="Enter password">
+                  </div>
+                </div>
+              </li>
+              <li class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-input">
+                      <input id="userPassword2" class="password-input" type="password" name="password" placeholder="Confirm password">
+                    </div>
+                  </div>
+                </li>
+                <li class="item-content item-input">
+                  <div class="item-inner"> 
+                    <div class="item-input">
+                      <select id="userCountry" class="country-list">
+                          <option value="" disabled selected>Select your country</option>
+                        <option value="South Korea" disabled="disabled">South Korea</option>
+                        <option value="India">India</option>
+                        <option value="Turkey" disabled="disabled">Turkey</option>
+                        <option value="Russia" disabled="disabled">Russia</option>
+                        <option value="Brazil" disabled="disabled">Brazil</option>
+
+                      </select>
+                    </div>
+                  </div>
+                </li>
+              <div class="divider-loginbutton">
+              <li class="item-content item-input">
+                  <div class="item-inner">
+                      <div class="item-input">
+                        <button onclick="ValidateAccount()" class="col button button-fill alert-text">SIGN UP</button>
+                        <!-- <a href="components/teamSplashBoard/teamSplash.html" class="col button button-fill">Sign UP</a> -->
                     </div>
                   </div>
                 </li>
                 <li class="item-content item-input">
                     <div class="item-inner">
-                      <div class="item-input">
-                        <input class="password-input" type="password" name="password" placeholder="Confirm password">
-                      </div>
+                      <div class="align-link-text"></div>
+                      <a id="signup-link" href="components/signInDashBoard/signInDashBoard.html">Do you have an account? <span class="span-sign">Sign In</span></a>
                     </div>
                   </li>
-                  <li class="item-content item-input">
-                    <div class="item-inner">
-                      <div class="item-input">
-                        <select id="userCountry" class="country-list">
-                            <option value="" disabled selected>Select your country</option>
-                          <option value="Canada">Canada</option>
-                          <option value="India">India</option>
-                          <option value="Turkey">Turkey</option>
-                          <option value="Russia">Russia</option>
-
-                        </select>
-                      </div>
-                    </div>
-                  </li>
-                <div class="divider-loginbutton">
-                <li class="item-content item-input">
-                    <div class="item-inner">
-                        <div class="item-input">
-                          <button onclick="signUp()" class="col button button-fill">SIGN UP</button>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="item-content item-input">
-                      <div class="item-inner">
-                        <div class="align-link-text"></div>
-                        <a id="signup-link" href="components/signInDashBoard/signInDashBoard.html">Do you have an account? <span class="span-sign">Sign In</span></a>
-                      </div>
-                    </li>
-                  </div>
-                </ul>
-              </div>  
-      <div class="mountain-container">
-          <img src="images/Mountain-with-road.png" alt="tree" class="mountain-logo-signup">
+                </div>
+              </ul>
+            </div>  
+    <div class="mountain-container">
+        <img src="images/Mountain-with-road.png" alt="tree" class="mountain-logo-signup">
+    </div>
+    
+          </div>
       </div>
-      
-            </div>
-        </div>
-    </div>  
+  </div>  
 </div>

@@ -27,17 +27,38 @@
   <title>Odyssey</title>
   <link rel="stylesheet" href="lib/framework7/css/framework7.ios.css">
   <link rel="stylesheet" href="lib/framework7/css/framework7.ios.colors.min.css">
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"> -->
   <link rel="stylesheet" href="css/styles.css">
   <!-- This main css file of the application -->
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="components/userDashboard/userDashboard.css">
   <!-- The core Firebase JS SDK is always required and must be listed first -->
-  <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
   <!-- TODO: Add SDKs for Firebase products that you want to use
-      https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-analytics.js"></script>
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyBLYiIGQbqOw-AkBoFWM4JS18db3HGFCEs",
+      authDomain: "odyssey-team01.firebaseapp.com",
+      databaseURL: "https://odyssey-team01.firebaseio.com",
+      projectId: "odyssey-team01",
+      storageBucket: "odyssey-team01.appspot.com",
+      messagingSenderId: "643737144251",
+      appId: "1:643737144251:web:2c7f666a8d999cec49529e",
+      measurementId: "G-E0ZFMT7LFG"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+  <!-- https://github.com/mathusummut/confetti.js (MIT License)
+  <script src="https://cdn.jsdelivr.net/gh/mathusummut/confetti.js/confetti.min.js"></script>  -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@0.4.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.core.min.js"></script>
+
 </head>
 
 <body style='margin : 0px; overflow: hidden;'>
@@ -83,14 +104,15 @@
                   <li class="item-content item-input">
                     <div class="item-inner">
                       <div class="item-input">
-                        <input class="user-input" id="loginName" type="text" name="username" placeholder="Enter username">
+                        <input class="user-input" id="loginName" type="text" name="username" placeholder="Enter email">
                       </div>
                     </div>
                   </li>
                   <li class="item-content item-input">
                     <div class="item-inner">
                       <div class="item-input">
-                        <input class="password-input" id="loginPassword" type="password" name="password" placeholder="Enter password">
+                        <input class="password-input" id="loginPassword" type="password" name="password"
+                          placeholder="Enter password">
                       </div>
                     </div>
                   </li>
@@ -98,8 +120,11 @@
                     <li class="item-content item-input">
                       <div class="item-inner">
                         <div class="item-input">
-                          <button onclick="signIn()" class="col button button-fill">SIGN
+                          <button onclick="ValidateSignInSplash()" class="col button button-fill">SIGN
                             IN</button>
+                          <!-- <a id="signup-link" href="components/userDashboard/userDashboard.html">SIGN IN
+                            ACCOUNT</a> -->
+
                         </div>
                       </div>
                     </li>
@@ -107,6 +132,8 @@
                       <div class="item-inner">
                         <a id="signup-link" href="components/signUpDashBoard/signUpDashBoard.html">SIGN UP FOR AN
                           ACCOUNT</a>
+                        <!-- <a id="signup-link" href="components/leaderBoard/leaderBoard.html">SIGN UP FOR AN
+                          ACCOUNT</a> -->
                       </div>
                     </li>
                   </div>
@@ -129,32 +156,27 @@
       </div>
     </div>
   </div>
-  </div>
 
   <script type="text/javascript" src="js/index.js"></script>
   <script type="text/javascript">
     app.initialize();
   </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5mDJ2C5RAT0OJDEbHLdlIDnAodwsKJqc">
+  </script>
+
   <script type="text/javascript" src="cordova.js"></script>
   <script type="text/javascript" src="lib/framework7/js/framework7.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@0.4.0/dist/confetti.browser.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.core.min.js"></script>
-  
+
   <!-- Dashboard Component -->
   <script type="text/javascript" src="js/my-app.js"></script>
   <script type="text/javascript" src="components/teamSplashBoard/teamSplash.js"></script>
   <script type="text/javascript" src="components/userDashboard/userDashboard.js"></script>
-  
+
   <!-- Sign Up and Sign In-->
   <script type="text/javascript" src="components/signUpDashBoard/signUpDashBoard.js"></script>
   <script type="text/javascript" src="components/signInDashBoard/signInDashBoard.js"></script>
-  
-  <!-- Replace the value of the key parameter with your own API key. -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5mDJ2C5RAT0OJDEbHLdlIDnAodwsKJqc"></script>
-  
-  <!-- https://github.com/mathusummut/confetti.js (MIT License)-->
-  <script src="https://cdn.jsdelivr.net/gh/mathusummut/confetti.js/confetti.min.js"></script>
- </body>
+
+</body>
 
 </html>
