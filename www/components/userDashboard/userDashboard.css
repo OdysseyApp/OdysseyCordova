@@ -209,7 +209,7 @@ html, body {
   left: 50%;
 }
 
-/* Add arrows to the left container (pointing right) */
+/* Add arrows to the left container (pointing right)
 
 .left::before {
   content: " ";
@@ -222,7 +222,7 @@ html, body {
   border: medium solid white;
   border-width: 10px 0 10px 10px;
   border-color: transparent transparent transparent white;
-}
+} */
 
 /* Add arrows to the right container (pointing left) */
 

@@ -880,7 +880,7 @@ findPlaces = () => {
     console.log(pos.lat);
     //Get all places within 2000 meters
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${pos.lat},${pos.lng}&radius=100&key=`
+    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${pos.lat},${pos.lng}&radius=100&key=AIzaSyDPjAo-brGLRUzVXy7ypi8Z4awuqX-qRfo`
     fetch(proxyurl + url)
       .then(
         function (response) {
@@ -938,27 +938,29 @@ function errorHandler(err) {
 function showSignedInUserDataFromFB() {
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-      var userInfodiv = document.getElementById("user-info");
-      var signoutButton = document.createElement("BUTTON");
-      signoutButton.setAttribute("class", "signoutBtn");
-      signoutButton.innerHTML = "Sign Out";
-      var signoutB = document.getElementsByClassName("signoutBtn");
-      var usernameDiv = document.createElement("span");
+      // var userInfodiv = document.getElementById("user-info");
+      // var signoutButton = document.createElement("BUTTON");
+      // signoutButton.setAttribute("class", "signoutBtn");
+      // signoutButton.innerHTML = "Sign Out";
+      // var signoutB = document.getElementsByClassName("signoutBtn");
+      
+      // var usernameDiv = document.createElement("span");
       //  usernameDiv.innerHTML = "Welcome "+user.email;
       //  userInfodiv.appendChild(usernameDiv);
       //  userInfodiv.appendChild(signoutButton);
-      //  signoutB[0].onclick = function (){
-      //    firebase.auth().signOut().then(function() {
-      //     myApp.alert("You Succesfully Log Out!", 'Success!',function (){
-      //       mainView.router.load({                   
-      //         url: "components/signInDashBoard/signInDashBoard.html",
-      //         ignoreCache: true,
-      //         reload: true ,
-      //     }); 
-      //     });
-      //   }).catch(function(error) {
-      //     myApp.alert(error, 'Error!');
-      //   });}
+      var signoutB = document.getElementsByClassName('profileIcon');
+       signoutB[0].onclick = function (){
+         firebase.auth().signOut().then(function() {
+          myApp.alert("You Succesfully Log Out!", 'Success!',function (){
+            mainView.router.load({                   
+              url: "components/signInDashBoard/signInDashBoard.html",
+              ignoreCache: true,
+              reload: true ,
+          }); 
+          });
+        }).catch(function(error) {
+          myApp.alert(error, 'Error!');
+        });}
     } else {
       console.log("User Succesfully-Signed out");
     }
