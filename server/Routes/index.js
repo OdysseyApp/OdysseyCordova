@@ -62,7 +62,7 @@ router.get("/flags/list/:id", async (req, res) => {
             data: data
           };
 
-          return re.response(responseData, res);
+          return re.response(data, res);
         }
       }
     );
