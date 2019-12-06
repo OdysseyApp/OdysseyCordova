@@ -880,7 +880,7 @@ findPlaces = () => {
     console.log(pos.lat);
     //Get all places within 2000 meters
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${pos.lat},${pos.lng}&radius=100&key=AIzaSyDPjAo-brGLRUzVXy7ypi8Z4awuqX-qRfo`
+    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${pos.lat},${pos.lng}&radius=100&key=`
     fetch(proxyurl + url)
       .then(
         function (response) {
