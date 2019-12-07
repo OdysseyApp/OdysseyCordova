@@ -1,3 +1,9 @@
+// Reference : Most of the code has been taken from the following resource.
+// Wikitude
+// https://github.com/Wikitude/wikitude-cordova-plugin
+// https://www.wikitude.com/external/doc/documentation/latest/phonegap/
+// https://github.com/Wikitude/wikitude-sdk-samples/blob/master/08_PointOfInterest_1_PoiAtLocation/js/poiatlocation.js#L76
+
 /*
     Information about server communication. This sample webservice is provided by Wikitude and returns random dummy
     places near given location.
@@ -42,12 +48,17 @@ var World = {
         World.markerList = [];
 
         /* Start loading marker assets. */
+        // Reference https://github.com/Wikitude/wikitude-sdk-samples/tree/master/08_PointOfInterest_1_PoiAtLocation/assets
         World.markerDrawableIdle = new AR.ImageResource("assets/marker_idle.png", {
             onError: World.onError
         });
+        // Reference
+        // https://github.com/Wikitude/wikitude-sdk-samples/tree/master/08_PointOfInterest_4_SelectingPois/assets
         World.markerDrawableSelected = new AR.ImageResource("assets/marker_selected.png", {
             onError: World.onError
         });
+        // Reference
+        // https://github.com/Wikitude/wikitude-sdk-samples/tree/master/08_PointOfInterest_4_SelectingPois/assets
         World.markerDrawableDirectionIndicator = new AR.ImageResource("assets/indi.png", {
             onError: World.onError
         });
@@ -63,34 +74,50 @@ var World = {
                 "description": poiData[currentPlaceNr].description
             };
             if(singlePoi.title==="Arsh") {
+                // Reference
+                // https://www.flaticon.com/free-icon/india_202884
                 World.markerDrawableIdle = new AR.ImageResource("assets/pinIndia.png", {
                     onError: World.onError
                 });
             } else if(singlePoi.title==="Yalcin") { 
+                //Reference
+                // https://www.flaticon.com/free-icon/turkey_202984#term=turkey%20country&page=1&position=6
                 World.markerDrawableIdle = new AR.ImageResource("assets/pinTurkey.png", {
                     onError: World.onError
                 });
             } else if(singlePoi.title==="Alex") {
+                //Reference
+                //https://www.flaticon.com/free-icon/russia_202873
                 World.markerDrawableIdle = new AR.ImageResource("assets/pinRussia.png", {
                     onError: World.onError
                 });
             } else if(singlePoi.title==="Nazi") {
+                //Reference
+                //https://www.flaticon.com/free-icon/iran_203040
                 World.markerDrawableIdle = new AR.ImageResource("assets/pinIran.png", {
                     onError: World.onError
                 });
             } else if(singlePoi.title==="Harry") {
+                //Reference
+                //https://www.flaticon.com/free-icon/vietnam_202939
                 World.markerDrawableIdle = new AR.ImageResource("assets/pinVietnam.png", {
                     onError: World.onError
                 });
             } else if(singlePoi.title==="Eduardo") {
+                //Reference
+                //https://www.flaticon.com/free-icon/brazil_202851
                 World.markerDrawableIdle = new AR.ImageResource("assets/pinBrazil.png", {
                     onError: World.onError
                 });
             } else if(singlePoi.title==="Sae Byeol") {
+                // Reference
+                // https://www.flaticon.com/free-icon/south-korea_203048
                 World.markerDrawableIdle = new AR.ImageResource("assets/pinSouthkorea.png", {
                     onError: World.onError
                 });
             } else if(singlePoi.title==="Starbuck") {
+                //Reference
+                //https://www.stickpng.com/img/icons-logos-emojis/iconic-brands/starbucks-logo
                 World.markerDrawableIdle = new AR.ImageResource("assets/starbucksLogo.png", {
                     onError: World.onError
                 }); 

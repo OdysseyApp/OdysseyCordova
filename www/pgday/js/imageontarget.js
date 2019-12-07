@@ -1,3 +1,9 @@
+// Reference : Most of the code has been taken from the followinf resource.
+// Wikitude
+// https://github.com/Wikitude/wikitude-cordova-plugin
+// https://www.wikitude.com/external/doc/documentation/latest/phonegap/
+// https://github.com/Wikitude/wikitude-sdk-samples/blob/master/08_PointOfInterest_1_PoiAtLocation/js/poiatlocation.js#L76
+
 // var World = {
 // 	loaded: false,
 

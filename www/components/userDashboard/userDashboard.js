@@ -1,3 +1,26 @@
+//References to some of the images used in the code
+// Reference            
+// https://www.flaticon.com/free-icon/india_202884
+
+// Reference
+// https://www.flaticon.com/free-icon/turkey_202984#term=turkey%20country&page=1&position=6
+
+// Reference
+// https://www.flaticon.com/free-icon/russia_202873
+
+// Reference
+// https://www.flaticon.com/free-icon/iran_203040
+
+// Reference
+// https://www.flaticon.com/free-icon/vietnam_202939
+
+// Reference
+// https://www.flaticon.com/free-icon/brazil_202851
+
+// Reference
+// https://www.flaticon.com/free-icon/south-korea_203048
+
+
 
 /*************************************************************/
 /************************Variable declaraion******************/
@@ -943,24 +966,25 @@ function showSignedInUserDataFromFB() {
       // signoutButton.setAttribute("class", "signoutBtn");
       // signoutButton.innerHTML = "Sign Out";
       // var signoutB = document.getElementsByClassName("signoutBtn");
-      
+
       // var usernameDiv = document.createElement("span");
       //  usernameDiv.innerHTML = "Welcome "+user.email;
       //  userInfodiv.appendChild(usernameDiv);
       //  userInfodiv.appendChild(signoutButton);
       var signoutB = document.getElementsByClassName('profileIcon');
-       signoutB[0].onclick = function (){
-         firebase.auth().signOut().then(function() {
-          myApp.alert("You Succesfully Log Out!", 'Success!',function (){
-            mainView.router.load({                   
+      signoutB[0].onclick = function () {
+        firebase.auth().signOut().then(function () {
+          myApp.alert("You Succesfully Log Out!", 'Success!', function () {
+            mainView.router.load({
               url: "components/signInDashBoard/signInDashBoard.html",
               ignoreCache: true,
-              reload: true ,
-          }); 
+              reload: true,
+            });
           });
-        }).catch(function(error) {
+        }).catch(function (error) {
           myApp.alert(error, 'Error!');
-        });}
+        });
+      }
     } else {
       console.log("User Succesfully-Signed out");
     }
