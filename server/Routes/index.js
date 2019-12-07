@@ -5,6 +5,93 @@ let api_key = require("../components/constants").API_KEY;
 let GLOBALS = require("../components/constants");
 var moment = require("moment");
 
+router.post("/flags/add", async (req, res) => {
+  try {
+    let requestData = req.body;
+    let timestamp = moment.utc().format("YYYY-MM-DD HH:mm:ss");
+    let row = {
+      name: requestData.name,
+      description: requestData.description,
+      latitude: requestData.latitude,
+      longitude: requestData.longitude,
+      timestamp: timestamp
+    };
+    db.connection.beginTransaction(function(err) {
+      db.connection.query("insert into flags set ?", row, (err, data) => {
+        if (err) {
+          db.connection.rollback();
+          console.log(err);
+          re.error(res);
+        } else {
+          db.connection.commit(err => {
+            if (err) {
+              db.connection.rollback();
+
+              re.error(res);
+            } else {
+              let responseData = {
+                status: 1,
+                message: "Flag Created",
+                data: { id: data.insertId, ...row }
+              };
+              return re.response(responseData, res);
+            }
+          });
+        }
+      });
+    });
+  } catch (err) {
+    console.log(err);
+    return re.error(res);
+  }
+});
+
+router.get("/flags/list/:id", async (req, res) => {
+  let user_id = req.params.id;
+
+  try {
+    db.connection.query(
+      "select * from flags where id = ?",
+      [user_id],
+      (err, data) => {
+        if (err) return re.error(res);
+        else {
+          let responseData = {
+            status: 1,
+            message: "Flags List",
+            data: data
+          };
+
+          return re.response(responseData, res);
+        }
+      }
+    );
+  } catch (err) {
+    // console.log(err);
+    return await re.error(res);
+  }
+});
+
+router.get("/flags/all", async (req, res) => {
+  try {
+    db.connection.query("select * from flags", (err, data) => {
+      if (err) return re.error(res);
+      else {
+        let responseData = {
+          status: 1,
+          message: "Flags List",
+          data: data
+        };
+
+        return re.response(responseData, res);
+      }
+    });
+  } catch (err) {
+    // console.log(err);
+    return await re.error(res);
+  }
+});
+
 router.post("/checkin/add", async (req, res) => {
   try {
     let requestData = req.body;
